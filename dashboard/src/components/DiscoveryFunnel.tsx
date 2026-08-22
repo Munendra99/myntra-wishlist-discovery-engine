@@ -55,61 +55,7 @@ export const EpistemicBadge: React.FC<{ status: EpistemicStatus }> = ({
 export const DiscoveryFunnel: React.FC = () => {
   return (
     <section className="space-y-8 animate-fadeIn">
-      {/* 1. Executive Discovery Synthesis Box */}
-      <div className="rounded-3xl bg-gradient-to-br from-slate-900 via-slate-900/95 to-slate-950 border border-slate-800 p-6 sm:p-8 shadow-2xl relative overflow-hidden">
-        <div className="relative z-10">
-          <div className="flex items-center justify-between flex-wrap gap-2 mb-4">
-            <div className="flex items-center space-x-2 text-pink-400 text-xs font-bold uppercase tracking-wider">
-              <Compass className="w-4 h-4 text-pink-400" />
-              <span>Customer Discovery Intelligence</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <EpistemicBadge status="INFERRED" />
-              <span className="text-[11px] text-slate-400 font-mono">
-                Grounded on 2,435 Multi-Source Public Signals
-              </span>
-            </div>
-          </div>
-
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-6">
-            Why Fashion Shoppers Stall on the Myntra Wishlist
-          </h2>
-
-          {/* Core Discovery Snapshot Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-            <div className="rounded-2xl bg-slate-950/80 border border-slate-800/80 p-4">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                Dominant Behavioral Persona
-              </span>
-              <div className="text-sm font-bold text-white mb-1 flex items-center justify-between">
-                <span>Power Shortlisters</span>
-                <span className="text-xs text-pink-400 font-mono">32.1%</span>
-              </div>
-              <p className="text-[11px] text-slate-400 leading-relaxed">
-                Hoard 50+ unorganized saved items; stall under choice overload.
-              </p>
-            </div>
-
-            <div className="rounded-2xl bg-slate-950/80 border border-slate-800/80 p-4">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                #1 Purchase Blocker
-              </span>
-              <div className="text-sm font-bold text-white mb-1 flex items-center justify-between">
-                <span>Decision Paralysis & Fit</span>
-                <span className="text-xs text-amber-400 font-mono">47.1%</span>
-              </div>
-              <p className="text-[11px] text-slate-400 leading-relaxed">
-                Fear of ill-fitting cuts + struggle to compare 6 similar saved tops.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Decorative background glow */}
-        <div className="absolute -top-32 -right-32 w-80 h-80 bg-pink-500/10 rounded-full blur-3xl pointer-events-none"></div>
-      </div>
-
-      {/* 2. Epistemic Data Honesty Guide */}
+      {/* 1. Epistemic Data Honesty Guide */}
       <div className="rounded-2xl bg-slate-900/60 border border-slate-800 p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h4 className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5 mb-1">
@@ -141,7 +87,7 @@ export const DiscoveryFunnel: React.FC = () => {
         </div>
       </div>
 
-      {/* 3. The End-to-End Discovery Funnel */}
+      {/* 2. The End-to-End Discovery Funnel */}
       <div>
         <div className="flex items-center justify-between mb-4">
           <div>
