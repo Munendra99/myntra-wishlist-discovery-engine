@@ -1,18 +1,20 @@
 import { NextResponse } from "next/server";
 import { Groq } from "groq-sdk";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "@/lib/supabase";
 
-const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY || "",
-});
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || "https://rlmhvekrfynxztnisfpd.supabase.co",
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
-);
+export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   try {
+    const apiKey = process.env.GROQ_API_KEY;
+    if (!apiKey) {
+      return NextResponse.json(
+        { error: "GROQ_API_KEY is not configured in Vercel environment variables." },
+        { status: 500 }
+      );
+    }
+    const groq = new Groq({ apiKey });
+
     const { messages } = await req.json();
 
     if (!messages || !Array.isArray(messages)) {
@@ -62,10 +64,10 @@ You must focus EXCLUSIVELY on NON-MONETARY product, behavioral, visual, and soci
 DO NOT recommend discounts, coupon codes, cashbacks, sale countdowns, or delivery fee waivers. All solutions must unlock conversion organically through UX, trust, sizing confidence, social validation, and curation.
 
 THE 6 CORE WISHLIST FRICTION AREAS:
-1. Wishlist Clutter & Decision Paralysis (46.9% of stalls - hoarding 50+ items without structure)
+1. Wishlist Clutter & Decision Paralysis (47.1% of stalls - hoarding 50+ items without structure)
 2. Fabric Drape & Studio Photo Ambiguity (24.9% of stalls - studio lighting vs real fabric flow)
-3. External Validation & Second-Opinion Gap (15.9% of stalls - waiting to show friends/mom on WhatsApp)
-4. Size & Fit Ambiguity (9.0% of stalls - inconsistent brand measurements & body shape doubts)
+3. External Validation & Second-Opinion Gap (15.8% of stalls - waiting to show friends/mom on WhatsApp)
+4. Size & Fit Ambiguity (8.9% of stalls - inconsistent brand measurements & body shape doubts)
 5. Silent Size Depletion in Wishlist (1.8% of stalls - saved sizes selling out without alternatives)
 6. Passive Moodboard & Intent Disconnect (1.5% of stalls - Pinterest-style saving without urgency)
 
