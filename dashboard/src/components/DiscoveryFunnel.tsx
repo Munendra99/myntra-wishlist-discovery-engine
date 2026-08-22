@@ -54,40 +54,8 @@ export const EpistemicBadge: React.FC<{ status: EpistemicStatus }> = ({
 
 export const DiscoveryFunnel: React.FC = () => {
   return (
-    <section className="space-y-8 animate-fadeIn">
-      {/* 1. Epistemic Data Honesty Guide */}
-      <div className="rounded-2xl bg-slate-900/60 border border-slate-800 p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5 mb-1">
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span>Analytical Data Honesty & Epistemic Framework</span>
-          </h4>
-          <p className="text-xs text-slate-400 leading-relaxed">
-            Every metric in this intelligence engine is rigorously labeled according to evidence strength. No synthetic or unverified conversion lift numbers are claimed.
-          </p>
-        </div>
-
-        <div className="flex flex-wrap gap-2 text-xs">
-          <div className="flex items-center space-x-1 bg-slate-950 px-2.5 py-1 rounded-lg border border-slate-800">
-            <EpistemicBadge status="OBSERVED" />
-            <span className="text-[11px] text-slate-400">Explicit in raw user text</span>
-          </div>
-          <div className="flex items-center space-x-1 bg-slate-950 px-2.5 py-1 rounded-lg border border-slate-800">
-            <EpistemicBadge status="INFERRED" />
-            <span className="text-[11px] text-slate-400">Multi-signal synthesis</span>
-          </div>
-          <div className="flex items-center space-x-1 bg-slate-950 px-2.5 py-1 rounded-lg border border-slate-800">
-            <EpistemicBadge status="HYPOTHESIS" />
-            <span className="text-[11px] text-slate-400">Product solution to test</span>
-          </div>
-          <div className="flex items-center space-x-1 bg-slate-950 px-2.5 py-1 rounded-lg border border-slate-800">
-            <EpistemicBadge status="UNKNOWN" />
-            <span className="text-[11px] text-slate-400">Requires 1st-party event data</span>
-          </div>
-        </div>
-      </div>
-
-      {/* 2. The End-to-End Discovery Funnel */}
+    <section className="space-y-6 animate-fadeIn">
+      {/* Customer Discovery Evidence Funnel */}
       <div>
         <div className="flex items-center justify-between mb-4">
           <div>
