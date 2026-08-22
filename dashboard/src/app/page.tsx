@@ -73,9 +73,9 @@ export default function DashboardPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20">
         {/* Module 1: Overview & Funnel */}
         {activeTab === "overview" && (
-          <div className="space-y-10">
-            <DiscoveryFunnel />
+          <div className="space-y-8">
             <MetricsCards insights={insights} totalFeedback={totalCount} />
+            <DiscoveryFunnel />
           </div>
         )}
 

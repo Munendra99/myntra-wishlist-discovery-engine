@@ -18,14 +18,12 @@ export const MetricsCards: React.FC<MetricsCardsProps> = ({
   insights,
   totalFeedback,
 }) => {
-  const topTheme = insights.length > 0 ? insights[0] : null;
-
   const highUrgencyCount = insights.filter(
     (i) => i.trend === "high_urgency" || i.trend === "rising"
   ).length;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
       {/* Metric 1: Total Customer Signals */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 p-5 border border-slate-800/80 shadow-lg group hover:border-slate-700/80 transition-all">
         <div className="flex items-center justify-between mb-3">
@@ -62,12 +60,12 @@ export const MetricsCards: React.FC<MetricsCardsProps> = ({
         </div>
         <div className="flex items-baseline space-x-2">
           <span className="text-xl font-bold text-white tracking-tight truncate">
-            {topTheme ? topTheme.theme_label : "Wishlist Clutter & Fatigue"}
+            Wishlist Clutter & Decision Paralysis
           </span>
         </div>
         <p className="text-xs text-amber-400 font-medium mt-2 flex items-center">
           <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mr-1.5 animate-pulse"></span>
-          {topTheme ? `${topTheme.pct_of_total}% of all wishlist stalls` : "46.9% of all wishlist stalls"}
+          47.1% of all wishlist stalls
         </p>
         <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-amber-500/5 rounded-full blur-xl group-hover:bg-amber-500/10 transition-all"></div>
       </div>
