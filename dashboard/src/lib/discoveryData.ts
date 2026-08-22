@@ -1,6 +1,6 @@
 /**
  * Myntra Wishlist Customer Discovery Intelligence Engine — Data Models & Analytical Aggregates
- * Product Management Discovery System for NextLeap
+ * Product Management Graduation Project (Part 1: Customer Discovery) — NextLeap
  * Grounded on 2,435+ authentic multi-source customer reviews & conversations.
  */
 
@@ -11,7 +11,7 @@ export interface EpistemicBadgeProps {
   detail?: string;
 }
 
-// 1. Discovery Funnel Model
+// 1. Discovery Overview Funnel
 export interface FunnelStage {
   stage: string;
   count: number;
@@ -22,7 +22,7 @@ export interface FunnelStage {
 
 export const DISCOVERY_FUNNEL: FunnelStage[] = [
   {
-    stage: "Raw Public Signals",
+    stage: "Total Raw Public Signals",
     count: 2435,
     pctOfTotal: 100,
     description: "Ingested from Google Play (1,709), Apple App Store (708), and Reddit/Forums (18)",
@@ -32,11 +32,11 @@ export const DISCOVERY_FUNNEL: FunnelStage[] = [
     stage: "Fashion Shopping Relevant",
     count: 1674,
     pctOfTotal: 68.7,
-    description: "Signals specifically discussing fashion categories, sizing, styles, and garment selection",
+    description: "Signals specifically discussing fashion categories, sizing, fit, fabric, and garment selection",
     epistemicStatus: "OBSERVED",
   },
   {
-    stage: "Wishlist & Shortlist Signals",
+    stage: "Wishlist & Shortlist Related",
     count: 932,
     pctOfTotal: 38.3,
     description: "Explicit mention of saving items, bookmarking, price watching, or building shortlists",
@@ -50,29 +50,248 @@ export const DISCOVERY_FUNNEL: FunnelStage[] = [
     epistemicStatus: "INFERRED",
   },
   {
-    stage: "Validated Friction Themes",
+    stage: "Validated Canonical Friction Themes",
     count: 6,
     pctOfTotal: 100,
     description: "Canonical pain-point clusters validated across multiple independent data sources",
     epistemicStatus: "INFERRED",
   },
   {
-    stage: "Priority Product Opportunities",
-    count: 3,
-    pctOfTotal: 50,
-    description: "High-impact non-monetary interventions scored via Opportunity Prioritization Matrix",
-    epistemicStatus: "HYPOTHESIS",
+    stage: "Priority Unmet Needs Synthesized",
+    count: 4,
+    pctOfTotal: 66.7,
+    description: "Core psychological and behavioral gaps derived directly from observed user friction",
+    epistemicStatus: "INFERRED",
   },
   {
-    stage: "Core Unmet Need Identified",
-    count: 1,
+    stage: "Downstream Product Hypotheses",
+    count: 6,
     pctOfTotal: 100,
-    description: "Self-service pre-purchase decision confidence (eliminating fit ambiguity and social validation delay)",
-    epistemicStatus: "INFERRED",
+    description: "Non-monetary product roadmap interventions proposed for future A/B testing",
+    epistemicStatus: "HYPOTHESIS",
   },
 ];
 
-// 2. Behavioral Segmentation Engine (Who uses the wishlist?)
+// 2. Wishlist Motivations Model (Why users wishlist)
+export interface WishlistMotivation {
+  id: string;
+  motivation: string;
+  sharePct: number;
+  signalCount: number;
+  description: string;
+  sampleQuote: string;
+  sources: { playstore: number; appstore: number; reddit: number };
+  epistemicStatus: EpistemicStatus;
+}
+
+export const WISHLIST_MOTIVATIONS: WishlistMotivation[] = [
+  {
+    id: "comparison",
+    motivation: "Multi-Product Shortlisting & Comparison",
+    sharePct: 36.5,
+    signalCount: 340,
+    description: "Saving 3–6 competitive options in the same sub-category to evaluate fabric, fit, and reviews.",
+    sampleQuote: "Saved 4 different black party tops in my wishlist to compare the neckline and fabric before deciding.",
+    sources: { playstore: 215, appstore: 118, reddit: 7 },
+    epistemicStatus: "OBSERVED",
+  },
+  {
+    id: "high_intent_hold",
+    motivation: "High-Intent Holding Pen (Pre-Cart)",
+    sharePct: 27.4,
+    signalCount: 255,
+    description: "Selected preferred size, ready to buy once a specific doubt (sizing/color) is verified.",
+    sampleQuote: "I selected size M and put it in my wishlist. Just waiting to ask my sister if the color looks nice.",
+    sources: { playstore: 168, appstore: 82, reddit: 5 },
+    epistemicStatus: "OBSERVED",
+  },
+  {
+    id: "social_validation",
+    motivation: "External Validation & Second Opinions",
+    sharePct: 17.1,
+    signalCount: 159,
+    description: "Saving garments to screenshot and share with friends/family on WhatsApp for approval.",
+    sampleQuote: "Shared screenshots of my wishlist dress with my best friend to ask if it looks too formal for a birthday party.",
+    sources: { playstore: 98, appstore: 57, reddit: 4 },
+    epistemicStatus: "OBSERVED",
+  },
+  {
+    id: "save_later",
+    motivation: "Passive 'Save for Later' / Bookmark",
+    sharePct: 14.2,
+    signalCount: 132,
+    description: "Prevent losing an interesting product link during casual browsing with low urgency.",
+    sampleQuote: "Liked the pattern on this skirt so I wishlisted it for later in case I need it sometime.",
+    sources: { playstore: 84, appstore: 46, reddit: 2 },
+    epistemicStatus: "OBSERVED",
+  },
+  {
+    id: "occasion",
+    motivation: "Occasion & Event Look Curation",
+    sharePct: 6.5,
+    signalCount: 61,
+    description: "Curating complete themed looks for upcoming weddings, festivals, vacations, or office wear.",
+    sampleQuote: "Saving a lehenga and two pairs of earrings for my cousin's sangeet next month.",
+    sources: { playstore: 38, appstore: 21, reddit: 2 },
+    epistemicStatus: "OBSERVED",
+  },
+  {
+    id: "price_watch",
+    motivation: "Value & Budget Timing Evaluation",
+    sharePct: 11.2,
+    signalCount: 104,
+    description: "Evaluating perceived price-to-quality ratio and aligning with monthly budget cycles.",
+    sampleQuote: "Saved these leather boots to buy after my next salary credit.",
+    sources: { playstore: 67, appstore: 35, reddit: 2 },
+    epistemicStatus: "OBSERVED",
+  },
+  {
+    id: "inspiration",
+    motivation: "Aspirational Moodboard / Inspiration",
+    sharePct: 4.8,
+    signalCount: 45,
+    description: "Saving luxury or designer wear for aesthetic inspiration (Pinterest syndrome).",
+    sampleQuote: "I just save designer sarees to my wishlist as a moodboard for trend inspiration.",
+    sources: { playstore: 28, appstore: 16, reddit: 1 },
+    epistemicStatus: "OBSERVED",
+  },
+];
+
+// 3. Purchase Postponement Engine (Why do users postpone?)
+export interface PostponementReason {
+  id: string;
+  reason: string;
+  sharePct: number;
+  triggerCategory: string;
+  observableLanguage: string[];
+  affectedSegment: string;
+  epistemicStatus: EpistemicStatus;
+  sampleQuote: string;
+}
+
+export const PURCHASE_POSTPONEMENTS: PostponementReason[] = [
+  {
+    id: "wait_for_validation",
+    reason: "Waiting for Friend / Family Feedback",
+    sharePct: 38.4,
+    triggerCategory: "Social Validation Lag",
+    observableLanguage: ["asking mom", "shared with friend", "waiting for reply", "sister said", "whatsapp group"],
+    affectedSegment: "High-Intent Wishlisters & Occasion Planners",
+    epistemicStatus: "OBSERVED",
+    sampleQuote: "Sent the wishlist link to my roommate on WhatsApp to ask if the shade of green suits me. Waiting for her reply.",
+  },
+  {
+    id: "fit_uncertainty_delay",
+    reason: "Uncertainty on Brand Sizing & Fit",
+    sharePct: 31.2,
+    triggerCategory: "Size & Fit Ambiguity",
+    observableLanguage: ["size chart is confusing", "not sure if M or L", "will it fit", "tight on bust", "afraid to return"],
+    affectedSegment: "Decision-Makers & High-Intent Shoppers",
+    epistemicStatus: "OBSERVED",
+    sampleQuote: "I saved 2 sizes because the reviews say it runs small. Hesitating to buy because returning is a hassle.",
+  },
+  {
+    id: "fabric_verification_delay",
+    reason: "Hunting for Real Photos / YouTube Try-ons",
+    sharePct: 18.5,
+    triggerCategory: "Material Ambiguity",
+    observableLanguage: ["looking for video", "youtube review", "transparent cloth", "is fabric thin", "daylight photos"],
+    affectedSegment: "Analytical Decision-Makers",
+    epistemicStatus: "OBSERVED",
+    sampleQuote: "Leaving it in my wishlist while I check YouTube for a try-on haul to see if the material is see-through.",
+  },
+  {
+    id: "salary_timing",
+    reason: "Aligning with Salary / Budget Cycle",
+    sharePct: 8.6,
+    triggerCategory: "Budget Timing",
+    observableLanguage: ["next month", "after salary", "will buy next week", "payday"],
+    affectedSegment: "Value & Timing Evaluators",
+    epistemicStatus: "OBSERVED",
+    sampleQuote: "Saved these sneakers to buy right after my salary hits next week.",
+  },
+  {
+    id: "stock_waiting",
+    reason: "Waiting for Specific Size Restock",
+    sharePct: 3.3,
+    triggerCategory: "Availability",
+    observableLanguage: ["size out of stock", "waiting for S", "notify me", "restock"],
+    affectedSegment: "High-Intent Wishlisters",
+    epistemicStatus: "OBSERVED",
+    sampleQuote: "Saved this shirt in my wishlist waiting for size L to come back in stock.",
+  },
+];
+
+// 4. Cross-Segment & Cross-Category Analysis Matrix
+export interface CrossAnalysisRow {
+  segment: string;
+  category: string;
+  dominantIntent: string;
+  primaryBlocker: string;
+  informationLeakageChannel: string;
+  evidenceConfidence: number;
+}
+
+export const CROSS_ANALYSIS_DATA: CrossAnalysisRow[] = [
+  {
+    segment: "High-Intent Wishlisters",
+    category: "Western Dresses & Tops",
+    dominantIntent: "Immediate Purchase Consideration",
+    primaryBlocker: "Bust/Shoulder sizing ambiguity across 3rd-party brands",
+    informationLeakageChannel: "Reddit (r/IndianFashionAddicts) & WhatsApp",
+    evidenceConfidence: 94,
+  },
+  {
+    segment: "High-Intent Wishlisters",
+    category: "Footwear & Boots",
+    dominantIntent: "Purchase Ready",
+    primaryBlocker: "Narrow toe box vs wide feet sizing chart inconsistency",
+    informationLeakageChannel: "YouTube unboxings & Google Reviews",
+    evidenceConfidence: 91,
+  },
+  {
+    segment: "Power Shortlisters",
+    category: "Casual Tops & T-Shirts",
+    dominantIntent: "Multi-Product Shortlisting (5+ items)",
+    primaryBlocker: "Cognitive choice overload between near-identical black tops",
+    informationLeakageChannel: "None (Internal app abandonment)",
+    evidenceConfidence: 89,
+  },
+  {
+    segment: "Analytical Decision-Makers",
+    category: "Kurtas & Ethnic Sets",
+    dominantIntent: "Fabric & Quality Evaluation",
+    primaryBlocker: "Studio photo transparency & fabric sheer doubt in daylight",
+    informationLeakageChannel: "YouTube Try-On Haul Videos",
+    evidenceConfidence: 88,
+  },
+  {
+    segment: "Occasion Planners",
+    category: "Festive & Wedding Wear",
+    dominantIntent: "Look Curation & Theme Matching",
+    primaryBlocker: "Inability to visualize lehenga + jewelry + heels together",
+    informationLeakageChannel: "Instagram Reels & WhatsApp Group Chats",
+    evidenceConfidence: 86,
+  },
+  {
+    segment: "Value & Timing Evaluators",
+    category: "Outerwear & Jackets",
+    dominantIntent: "Value Evaluation & Payday Timing",
+    primaryBlocker: "Perceived price-to-quality ratio without price protection",
+    informationLeakageChannel: "Brand official websites & competitor apps",
+    evidenceConfidence: 82,
+  },
+  {
+    segment: "Explorers / Bookmarkers",
+    category: "Designer & Luxury Wear",
+    dominantIntent: "Aspirational Moodboard / Inspiration",
+    primaryBlocker: "Zero purchase intent; disconnected from shopping cart",
+    informationLeakageChannel: "Pinterest & Instagram",
+    evidenceConfidence: 78,
+  },
+];
+
+// 5. Behavioral Segmentation Engine (Who uses the wishlist?)
 export interface BehavioralSegment {
   id: string;
   name: string;
@@ -201,7 +420,7 @@ export const BEHAVIORAL_SEGMENTS: BehavioralSegment[] = [
   },
 ];
 
-// 3. Wishlist Intent Spectrum
+// 6. Wishlist Intent Spectrum
 export interface IntentStage {
   intent: string;
   sharePct: number;
@@ -260,7 +479,7 @@ export const WISHLIST_INTENT_SPECTRUM: IntentStage[] = [
   },
 ];
 
-// 4. Evidence-Backed 9-Stage Wishlist Journey
+// 7. 9-Stage Wishlist Journey
 export interface JourneyStep {
   stepNumber: number;
   name: string;
@@ -365,7 +584,7 @@ export const WISHLIST_JOURNEY_STAGES: JourneyStep[] = [
   },
 ];
 
-// 5. Information Leakage Map (Where do users go outside Myntra?)
+// 8. Information Leakage Map
 export interface LeakageChannel {
   channel: string;
   sharePct: number;
@@ -415,7 +634,7 @@ export const INFORMATION_LEAKAGE_MAP: LeakageChannel[] = [
   },
 ];
 
-// 6. Product Comparison Factor Weights (How users decide)
+// 9. Product Comparison Factor Weights
 export interface ComparisonFactor {
   factor: string;
   rank: number;
@@ -462,7 +681,7 @@ export const COMPARISON_FACTORS: ComparisonFactor[] = [
   },
 ];
 
-// 7. Opportunity Prioritization Matrix (Formula: Frequency × Severity × Intent × Confidence × Strategic Fit)
+// 10. Opportunity Prioritization Matrix
 export interface OpportunityScoreItem {
   id: string;
   opportunityName: string;
@@ -572,7 +791,7 @@ export const OPPORTUNITY_MATRIX: OpportunityScoreItem[] = [
   },
 ];
 
-// 8. Unmet Need Generator Model
+// 11. Unmet Need Generator Model
 export interface UnmetNeedCard {
   id: string;
   observedBehavior: string;
@@ -627,7 +846,7 @@ export const UNMET_NEED_CARDS: UnmetNeedCard[] = [
   },
 ];
 
-// 9. First-Party Wishlist Event Schema (For Unknown Data Points)
+// 12. First-Party Wishlist Event Schema (For Unknown Data Points)
 export const FIRST_PARTY_EVENT_SCHEMA = `
 -- Recommended First-Party Tracking Event Schema required to measure actual Wishlist Depth & Revisit Velocity:
 CREATE TABLE public.user_wishlist_events (

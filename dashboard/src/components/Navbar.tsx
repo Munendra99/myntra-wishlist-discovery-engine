@@ -13,15 +13,22 @@ import {
   Target,
   FileText,
   Bot,
+  Heart,
+  Clock,
+  FlaskConical,
 } from "lucide-react";
 
 export type DiscoveryTab =
   | "overview"
+  | "motivations"
   | "personas"
   | "journey"
   | "blockers"
+  | "postponement"
   | "leakage"
+  | "cross_analysis"
   | "opportunities"
+  | "hypotheses"
   | "evidence"
   | "copilot";
 
@@ -41,14 +48,18 @@ export const Navbar: React.FC<NavbarProps> = ({
   totalFeedbackCount,
 }) => {
   const tabs: { id: DiscoveryTab; label: string; icon: React.ReactNode }[] = [
-    { id: "overview", label: "Discovery Funnel", icon: <Compass className="w-3.5 h-3.5" /> },
-    { id: "personas", label: "User Personas", icon: <Users className="w-3.5 h-3.5" /> },
-    { id: "journey", label: "Wishlist Journey", icon: <Layers className="w-3.5 h-3.5" /> },
-    { id: "blockers", label: "Friction & Uncertainty", icon: <AlertTriangle className="w-3.5 h-3.5" /> },
-    { id: "leakage", label: "Info Leakage", icon: <ExternalLink className="w-3.5 h-3.5" /> },
-    { id: "opportunities", label: "Opportunity Matrix", icon: <Target className="w-3.5 h-3.5" /> },
-    { id: "evidence", label: "Evidence Explorer", icon: <FileText className="w-3.5 h-3.5" /> },
-    { id: "copilot", label: "AI Copilot", icon: <Bot className="w-3.5 h-3.5" /> },
+    { id: "overview", label: "1. Overview & Funnel", icon: <Compass className="w-3.5 h-3.5" /> },
+    { id: "motivations", label: "2. Motivations", icon: <Heart className="w-3.5 h-3.5" /> },
+    { id: "personas", label: "3. User Personas", icon: <Users className="w-3.5 h-3.5" /> },
+    { id: "journey", label: "4. Journey & Intent", icon: <Layers className="w-3.5 h-3.5" /> },
+    { id: "blockers", label: "5. Friction & Uncertainty", icon: <AlertTriangle className="w-3.5 h-3.5" /> },
+    { id: "postponement", label: "6. Postponement", icon: <Clock className="w-3.5 h-3.5" /> },
+    { id: "leakage", label: "7. Info Leakage", icon: <ExternalLink className="w-3.5 h-3.5" /> },
+    { id: "cross_analysis", label: "8. Cross Matrix", icon: <Layers className="w-3.5 h-3.5" /> },
+    { id: "opportunities", label: "9. Unmet Needs & Opps", icon: <Target className="w-3.5 h-3.5" /> },
+    { id: "hypotheses", label: "10. PM Hypotheses", icon: <FlaskConical className="w-3.5 h-3.5" /> },
+    { id: "evidence", label: "11. Evidence Explorer", icon: <FileText className="w-3.5 h-3.5" /> },
+    { id: "copilot", label: "12. AI Copilot", icon: <Bot className="w-3.5 h-3.5" /> },
   ];
 
   return (
@@ -66,14 +77,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div>
               <div className="flex items-center space-x-2">
                 <span className="font-bold text-white tracking-tight text-sm sm:text-base">
-                  Myntra <span className="text-pink-400">Wishlist Discovery Engine</span>
+                  Myntra <span className="text-pink-400">Customer Discovery Engine</span>
                 </span>
                 <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-pink-500/10 text-pink-300 border border-pink-500/20">
-                  NextLeap PM Project
+                  NextLeap PM Project (Part 1)
                 </span>
               </div>
               <p className="text-[11px] text-slate-400 hidden sm:block">
-                AI Customer Discovery Intelligence • Zero Monetary Incentives
+                Grounded Customer Discovery • Zero Monetary Incentives Constraint
               </p>
             </div>
           </div>
@@ -86,7 +97,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="font-semibold text-white">
                 {totalFeedbackCount.toLocaleString()}
               </span>
-              <span className="text-slate-400 hidden sm:inline">Signals</span>
+              <span className="text-slate-400 hidden sm:inline">Verified Signals</span>
             </div>
 
             {/* Live Sync Button */}
@@ -112,7 +123,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 key={tab.id}
                 onClick={() => onSelectTab(tab.id)}
-                className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all whitespace-nowrap ${
+                className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all whitespace-nowrap ${
                   isActive
                     ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md shadow-pink-500/25"
                     : "text-slate-400 hover:text-slate-200 hover:bg-slate-900"
