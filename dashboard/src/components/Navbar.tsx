@@ -9,14 +9,13 @@ import {
   Compass,
   Target,
   FileText,
-  Bot,
   Heart,
   Clock,
+  Bot,
 } from "lucide-react";
 
 export type DiscoveryTab =
   | "overview"
-  | "copilot"
   | "motivations"
   | "personas"
   | "journey"
@@ -40,8 +39,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   totalFeedbackCount,
 }) => {
   const tabs: { id: DiscoveryTab; label: string; icon: React.ReactNode }[] = [
-    { id: "overview", label: "Overview & Funnel", icon: <Compass className="w-3.5 h-3.5" /> },
-    { id: "copilot", label: "AI Copilot", icon: <Bot className="w-3.5 h-3.5" /> },
+    { id: "overview", label: "Overview & Copilot", icon: <Bot className="w-3.5 h-3.5" /> },
     { id: "motivations", label: "Motivations", icon: <Heart className="w-3.5 h-3.5" /> },
     { id: "personas", label: "User Personas", icon: <Users className="w-3.5 h-3.5" /> },
     { id: "journey", label: "Journey & Intent", icon: <Layers className="w-3.5 h-3.5" /> },

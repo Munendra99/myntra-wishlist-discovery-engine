@@ -9,10 +9,6 @@ import {
   Bot,
   User,
   Loader2,
-  HelpCircle,
-  ShieldCheck,
-  FileText,
-  Quote,
 } from "lucide-react";
 import { EpistemicBadge } from "./DiscoveryFunnel";
 
@@ -26,17 +22,11 @@ export const AiCopilot: React.FC = () => {
     {
       role: "assistant",
       content: `### 👋 Welcome to the Executive Discovery Copilot
-I am your **Product Discovery Research Assistant** for the Myntra Wishlist Intelligence Project.
+I am your **Product Discovery Research Assistant** for the Myntra Wishlist Intelligence Engine.
 
 I am grounded on **2,435+ authentic customer reviews & signals** across Google Play Store, Apple App Store, and Fashion Forums.
 
-You can ask me any of the 12 core discovery questions:
-- **"Why do shoppers wishlist without purchasing within 30 days?"**
-- **"Who are the 6 behavioral personas using the wishlist?"**
-- **"What information do users seek externally on YouTube or WhatsApp?"**
-- **"What is the difference between genuine purchase intent vs bookmarking?"**
-- **"What are the top unmet needs and opportunity priority scores?"**
-- **"Show me supporting and counter-evidence for size & fit ambiguity."**`,
+Click any of the suggested queries above or ask your own discovery question!`,
     },
   ]);
   const [input, setInput] = useState("");
@@ -52,12 +42,12 @@ You can ask me any of the 12 core discovery questions:
   }, [messages, isLoading]);
 
   const quickPrompts = [
-    "Why do shoppers wishlist without purchasing?",
+    "Why do shoppers wishlist without purchasing within 30 days?",
     "Who are the 6 behavioral personas using the wishlist?",
-    "Where do users go outside Myntra for information?",
-    "What are the top unmet needs to prioritize?",
-    "Show me supporting & counter-evidence for fit anxiety",
-    "How do users compare shortlisted products?",
+    "What information do users seek externally on YouTube or WhatsApp?",
+    "What is the difference between genuine purchase intent vs bookmarking?",
+    "What are the top unmet needs and opportunity priority scores?",
+    "Show me supporting and counter-evidence for size & fit ambiguity.",
   ];
 
   const handleSend = async (userText?: string) => {
@@ -129,7 +119,7 @@ You can ask me any of the 12 core discovery questions:
                 </span>
               </h3>
               <p className="text-[11px] text-slate-400">
-                Structured RAG Q&A answering PM discovery questions with citations & counter-evidence
+                Structured RAG Q&A answering discovery questions with citations & counter-evidence
               </p>
             </div>
           </div>
@@ -141,7 +131,7 @@ You can ask me any of the 12 core discovery questions:
           {/* Quick Prompts Pills */}
           <div className="mb-4">
             <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-2">
-              Suggested PM Discovery Queries:
+              Suggested Queries:
             </span>
             <div className="flex flex-wrap gap-2">
               {quickPrompts.map((prompt, idx) => (
@@ -257,7 +247,7 @@ You can ask me any of the 12 core discovery questions:
                   <Loader2 className="w-4 h-4 text-pink-400 animate-spin" />
                 </div>
                 <span className="font-mono text-slate-300 animate-pulse">
-                  Querying 2,435+ structured signals & synthesizing PM discovery evidence...
+                  Querying 2,435+ structured signals & synthesizing discovery evidence...
                 </span>
               </div>
             )}

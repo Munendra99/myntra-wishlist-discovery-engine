@@ -71,33 +71,31 @@ export default function DashboardPage() {
 
       {/* Main Content Area */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20">
-        {/* Module 1: Overview & Funnel */}
+        {/* Module 1: Overview & AI Copilot */}
         {activeTab === "overview" && (
-          <div className="space-y-8">
+          <div className="space-y-10">
             <MetricsCards insights={insights} totalFeedback={totalCount} />
+            <AiCopilot />
             <DiscoveryFunnel />
           </div>
         )}
 
-        {/* Module 2: AI Copilot (2nd place) */}
-        {activeTab === "copilot" && <AiCopilot />}
-
-        {/* Module 3: Motivations */}
+        {/* Module 2: Motivations */}
         {activeTab === "motivations" && <WishlistMotivations />}
 
-        {/* Module 4: User Personas */}
+        {/* Module 3: User Personas */}
         {activeTab === "personas" && <BehavioralSegments />}
 
-        {/* Module 5: Journey & Intent Spectrum */}
+        {/* Module 4: Journey & Intent Spectrum */}
         {activeTab === "journey" && <WishlistJourney />}
 
-        {/* Module 6: Purchase Postponement */}
+        {/* Module 5: Purchase Postponement */}
         {activeTab === "postponement" && <PurchasePostponement />}
 
-        {/* Module 7: Opportunity Prioritization & Unmet Needs */}
+        {/* Module 6: Opportunity Prioritization & Unmet Needs */}
         {activeTab === "opportunities" && <OpportunityPrioritization />}
 
-        {/* Module 8: Traceable Evidence Explorer */}
+        {/* Module 7: Traceable Evidence Explorer */}
         {activeTab === "evidence" && (
           <EvidenceExplorer initialReviews={reviews} />
         )}
