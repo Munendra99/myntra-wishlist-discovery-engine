@@ -10,7 +10,11 @@ import {
   User,
   Loader2,
   HelpCircle,
+  ShieldCheck,
+  FileText,
+  Quote,
 } from "lucide-react";
+import { EpistemicBadge } from "./DiscoveryFunnel";
 
 interface Message {
   role: "user" | "assistant";
@@ -21,8 +25,18 @@ export const AiCopilot: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content:
-        "**Hello! I am your Myntra Discovery Copilot** 🛍️\n\nI have synthesized over **2,400+ verified customer reviews** across Google Play Store, Apple App Store, and Forums.\n\nAsk me anything about why shoppers stall on wishlists, specific category frictions (e.g. dresses, footwear), or actionable product growth strategies!",
+      content: `### 👋 Welcome to the Executive Discovery Copilot
+I am your **Product Discovery Research Assistant** for the Myntra Wishlist Intelligence Project.
+
+I am grounded on **2,435+ authentic customer reviews & signals** across Google Play Store, Apple App Store, and Fashion Forums.
+
+You can ask me any of the 12 core discovery questions:
+- **"Why do shoppers wishlist without purchasing within 30 days?"**
+- **"Who are the 6 behavioral personas using the wishlist?"**
+- **"What information do users seek externally on YouTube or WhatsApp?"**
+- **"What is the difference between genuine purchase intent vs bookmarking?"**
+- **"What are the top unmet needs and opportunity priority scores?"**
+- **"Show me supporting and counter-evidence for size & fit ambiguity."**`,
     },
   ]);
   const [input, setInput] = useState("");
@@ -38,10 +52,12 @@ export const AiCopilot: React.FC = () => {
   }, [messages, isLoading]);
 
   const quickPrompts = [
-    "Why are users dropping off from the wishlist?",
-    "Why do users hesitate to purchase dresses?",
-    "What are the top complaints regarding platform fees?",
-    "Suggest 3 product features to unlock wishlist conversions",
+    "Why do shoppers wishlist without purchasing?",
+    "Who are the 6 behavioral personas using the wishlist?",
+    "Where do users go outside Myntra for information?",
+    "What are the top unmet needs to prioritize?",
+    "Show me supporting & counter-evidence for fit anxiety",
+    "How do users compare shortlisted products?",
   ];
 
   const handleSend = async (userText?: string) => {
@@ -79,7 +95,7 @@ export const AiCopilot: React.FC = () => {
           ...prev,
           {
             role: "assistant",
-            content: "⚠️ " + (data.error || "Unable to generate AI answer."),
+            content: "⚠️ " + (data.error || "Unable to generate AI response."),
           },
         ]);
       }
@@ -88,7 +104,7 @@ export const AiCopilot: React.FC = () => {
         ...prev,
         {
           role: "assistant",
-          content: "⚠️ Network error connecting to Groq AI service.",
+          content: "⚠️ Network error connecting to AI Discovery Service.",
         },
       ]);
     } finally {
@@ -97,34 +113,35 @@ export const AiCopilot: React.FC = () => {
   };
 
   return (
-    <section className="mb-12">
+    <section className="space-y-6 animate-fadeIn">
+      {/* Header */}
       <div className="rounded-3xl bg-gradient-to-b from-slate-900 via-slate-900/95 to-slate-950 border border-slate-800 shadow-2xl overflow-hidden">
-        {/* Header */}
-        <div className="px-6 py-4 bg-slate-950/80 border-b border-slate-800 flex items-center justify-between">
+        <div className="px-6 py-4 bg-slate-950/80 border-b border-slate-800 flex items-center justify-between flex-wrap gap-2">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-pink-500 to-rose-500 flex items-center justify-center shadow-md shadow-pink-500/25">
-              <Sparkles className="w-4 h-4 text-white" />
+              <Bot className="w-4 h-4 text-white" />
             </div>
             <div>
-              <h3 className="font-bold text-white text-sm flex items-center gap-1.5">
-                Executive AI Discovery Copilot
+              <h3 className="font-bold text-white text-sm flex items-center gap-2">
+                Executive Discovery Copilot
                 <span className="text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/20">
                   Grounded on 2.4k+ Reviews
                 </span>
               </h3>
               <p className="text-[11px] text-slate-400">
-                Live Llama 3.3 strategic Q&A powered by Groq & Supabase
+                Structured RAG Q&A answering PM discovery questions with citations & counter-evidence
               </p>
             </div>
           </div>
+          <EpistemicBadge status="INFERRED" />
         </div>
 
         {/* Chat Body */}
         <div className="p-6">
           {/* Quick Prompts Pills */}
           <div className="mb-4">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 block mb-2">
-              Suggested Strategy Queries:
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-2">
+              Suggested PM Discovery Queries:
             </span>
             <div className="flex flex-wrap gap-2">
               {quickPrompts.map((prompt, idx) => (
@@ -141,7 +158,7 @@ export const AiCopilot: React.FC = () => {
           </div>
 
           {/* Messages List */}
-          <div className="h-[420px] overflow-y-auto pr-2 space-y-4 mb-4 custom-scrollbar bg-slate-950/60 rounded-2xl p-4 border border-slate-800/80">
+          <div className="h-[460px] overflow-y-auto pr-2 space-y-4 mb-4 custom-scrollbar bg-slate-950/70 rounded-2xl p-4 border border-slate-800/80">
             {messages.map((m, idx) => (
               <div
                 key={idx}
@@ -240,7 +257,7 @@ export const AiCopilot: React.FC = () => {
                   <Loader2 className="w-4 h-4 text-pink-400 animate-spin" />
                 </div>
                 <span className="font-mono text-slate-300 animate-pulse">
-                  Analyzing 2,400+ reviews & synthesizing executive answer...
+                  Querying 2,435+ structured signals & synthesizing PM discovery evidence...
                 </span>
               </div>
             )}
@@ -257,7 +274,7 @@ export const AiCopilot: React.FC = () => {
           >
             <input
               type="text"
-              placeholder="Ask anything (e.g. 'Why do users drop off from dresses?' or 'How to fix return anxiety?')..."
+              placeholder="Ask any discovery question (e.g. 'What are the top purchase blockers?' or 'Why do users postpone?')..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               disabled={isLoading}
