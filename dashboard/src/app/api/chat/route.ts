@@ -38,7 +38,7 @@ export async function POST(req: Request) {
       .limit(20);
 
     const contextString = `
-LATEST GROUNDED WISHLIST METRICS (Synthesized from 2,784+ authentic user reviews from Google Play Store, Apple App Store, and Quora/Reddit):
+LATEST GROUNDED WISHLIST METRICS (Synthesized from 3,026+ authentic user reviews from Google Play Store, Apple App Store, and Quora/Reddit):
 ${(insights || [])
   .map(
     (i: any) =>

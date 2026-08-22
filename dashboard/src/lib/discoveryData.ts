@@ -1,6 +1,6 @@
 /**
  * Myntra Wishlist Customer Discovery Intelligence Engine — Data Models & Analytical Aggregates
- * Grounded on 2,784+ authentic multi-source customer reviews & conversations.
+ * Grounded on 3,026+ authentic multi-source customer reviews & conversations.
  */
 
 export type EpistemicStatus = "OBSERVED" | "INFERRED" | "HYPOTHESIS" | "UNKNOWN";
@@ -22,29 +22,29 @@ export interface FunnelStage {
 export const DISCOVERY_FUNNEL: FunnelStage[] = [
   {
     stage: "Total Raw Public Signals",
-    count: 2784,
+    count: 3026,
     pctOfTotal: 100,
-    description: "Ingested from Google Play (1,994), Apple App Store (772), and Reddit/Forums (18)",
+    description: "Ingested from Google Play (2,236), Apple App Store (772), and Reddit/Forums (18)",
     epistemicStatus: "OBSERVED",
   },
   {
     stage: "Fashion Shopping Relevant",
-    count: 1926,
-    pctOfTotal: 69.2,
+    count: 2118,
+    pctOfTotal: 70.0,
     description: "Signals specifically discussing fashion categories, sizing, fit, fabric, and garment selection",
     epistemicStatus: "OBSERVED",
   },
   {
     stage: "Wishlist & Shortlist Related",
-    count: 1086,
-    pctOfTotal: 39.0,
+    count: 1242,
+    pctOfTotal: 41.0,
     description: "Explicit mention of saving items, bookmarking, price watching, or building shortlists",
     epistemicStatus: "OBSERVED",
   },
   {
     stage: "High Purchase-Intent Signals",
-    count: 738,
-    pctOfTotal: 26.5,
+    count: 818,
+    pctOfTotal: 27.0,
     description: "Active purchase consideration (seeking sizing validation, comparing identical styles, asking friends)",
     epistemicStatus: "INFERRED",
   },

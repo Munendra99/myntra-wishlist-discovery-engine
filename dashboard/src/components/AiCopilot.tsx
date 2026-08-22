@@ -24,7 +24,7 @@ export const AiCopilot: React.FC = () => {
       content: `### 👋 Welcome to the Executive Discovery Copilot
 I am your **Product Discovery Research Assistant** for the Myntra Wishlist Intelligence Engine.
 
-I am grounded on **2,784+ authentic customer reviews & signals** across Google Play Store, Apple App Store, and Fashion Forums.
+I am grounded on **3,026+ authentic customer reviews & signals** across Google Play Store, Apple App Store, and Fashion Forums.
 
 Click any of the suggested queries above or ask your own discovery question!`,
     },
@@ -119,7 +119,7 @@ Click any of the suggested queries above or ask your own discovery question!`,
               <h3 className="font-bold text-white text-sm flex items-center gap-2">
                 Executive Discovery Copilot
                 <span className="text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/20">
-                  Grounded on 2.8k+ Reviews
+                  Grounded on 3.0k+ Reviews
                 </span>
               </h3>
               <p className="text-[11px] text-slate-400">
@@ -251,7 +251,7 @@ Click any of the suggested queries above or ask your own discovery question!`,
                   <Loader2 className="w-4 h-4 text-pink-400 animate-spin" />
                 </div>
                 <span className="font-mono text-slate-300 animate-pulse">
-                  Querying 2,784+ structured signals & synthesizing discovery evidence...
+                  Querying 3,026+ structured signals & synthesizing discovery evidence...
                 </span>
               </div>
             )}

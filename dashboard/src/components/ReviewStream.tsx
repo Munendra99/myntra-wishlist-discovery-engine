@@ -124,8 +124,8 @@ export const ReviewStream: React.FC<ReviewStreamProps> = ({
           {/* Platform Filter Buttons */}
           <div className="flex bg-slate-900 p-1 rounded-xl border border-slate-800">
             {[
-              { id: "all", label: "All (2,784)" },
-              { id: "playstore", label: "Play Store (2.0k)" },
+              { id: "all", label: "All (3,026)" },
+              { id: "playstore", label: "Play Store (2.2k)" },
               { id: "appstore", label: "App Store (772)" },
               { id: "reddit", label: "Quora/Forums (18)" },
             ].map((tab) => (

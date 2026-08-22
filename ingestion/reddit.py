@@ -1,6 +1,6 @@
 """
 Reddit Ingestion Layer (via Apify)
-Runs an Apify Reddit scraper actor to collect posts and comments discussing Myntra wishlist/cart behavior,
+Runs an Apify Reddit scraper actor to collect posts and comments discussing Myntra wishlist, shortlist, and sizing behavior,
 filters by keywords, and upserts into Supabase raw_feedback with platform = 'reddit'.
 """
 
@@ -9,10 +9,9 @@ from typing import List, Dict, Any
 from apify_client import ApifyClient
 from ingestion.db import matches_wishlist_keywords, upsert_raw_feedback
 
-# Free tier Reddit scraper actor on Apify Store
 DEFAULT_REDDIT_ACTOR = "trudax/reddit-scraper-lite"
 
-def fetch_reddit_posts(apify_token: str, max_items: int = 30) -> List[Dict[str, Any]]:
+def fetch_reddit_posts(apify_token: str, max_items: int = 60) -> List[Dict[str, Any]]:
     """
     Triggers the Apify Reddit Scraper actor, retrieves matching submissions/comments.
     """
@@ -27,9 +26,12 @@ def fetch_reddit_posts(apify_token: str, max_items: int = 30) -> List[Dict[str, 
         "searches": [
             "myntra wishlist",
             "myntra saved items",
-            "myntra cart"
+            "myntra shortlist",
+            "myntra cart delay",
+            "myntra size chart fit",
+            "myntra fabric quality review"
         ],
-        "sort": "new",
+        "sort": "relevance",
         "maxItems": max_items
     }
 
@@ -67,7 +69,7 @@ def fetch_reddit_posts(apify_token: str, max_items: int = 30) -> List[Dict[str, 
         print(f"[Reddit Note] Apify Reddit Scraper: {e}")
         return []
 
-def run_reddit_ingestion(max_items: int = 30) -> int:
+def run_reddit_ingestion(max_items: int = 60) -> int:
     """Executes Reddit scraping via Apify and upsert into Supabase."""
     token = os.getenv("APIFY_API_TOKEN")
     records = fetch_reddit_posts(apify_token=token, max_items=max_items)
