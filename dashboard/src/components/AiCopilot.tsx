@@ -42,12 +42,16 @@ Click any of the suggested queries above or ask your own discovery question!`,
   }, [messages, isLoading]);
 
   const quickPrompts = [
-    "Why do shoppers wishlist without purchasing within 30 days?",
-    "Who are the 6 behavioral personas using the wishlist?",
-    "What information do users seek externally on YouTube or WhatsApp?",
-    "What is the difference between genuine purchase intent vs bookmarking?",
-    "What are the top unmet needs and opportunity priority scores?",
-    "Show me supporting and counter-evidence for size & fit ambiguity.",
+    "Why do users add fashion products to their wishlist?",
+    "What prevents wishlisted products from eventually being purchased?",
+    "What uncertainties remain after users have identified a product they like?",
+    "What causes users to postpone a purchase?",
+    "How do users compare multiple shortlisted products?",
+    "What information do users seek outside Myntra/AJIO before purchasing?",
+    "What role do fit, size, styling, price, reviews, occasion and social validation play?",
+    "When do users use the wishlist as genuine purchase intent versus simply as a bookmarking mechanism?",
+    "How do these behaviors differ across user segments?",
+    "What unmet needs emerge consistently across user conversations?",
   ];
 
   const handleSend = async (userText?: string) => {
