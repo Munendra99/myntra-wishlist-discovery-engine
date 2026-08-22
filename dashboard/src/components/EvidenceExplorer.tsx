@@ -210,9 +210,9 @@ export const EvidenceExplorer: React.FC<EvidenceExplorerProps> = ({
         {/* Platform Tabs */}
         <div className="flex bg-slate-950 p-1 rounded-xl border border-slate-800 w-full md:w-auto overflow-x-auto custom-scrollbar">
           {[
-            { id: "all", label: "All Sources (2.4k)" },
-            { id: "playstore", label: "Play Store (1.7k)" },
-            { id: "appstore", label: "App Store (708)" },
+            { id: "all", label: "All Sources (2.8k)" },
+            { id: "playstore", label: "Play Store (2.0k)" },
+            { id: "appstore", label: "App Store (772)" },
             { id: "reddit", label: "Quora / Reddit (18)" },
           ].map((tab) => (
             <button

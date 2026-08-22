@@ -17,7 +17,7 @@ export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState<DiscoveryTab>("overview");
   const [insights, setInsights] = useState<InsightTheme[]>([]);
   const [reviews, setReviews] = useState<RawFeedback[]>([]);
-  const [totalCount, setTotalCount] = useState<number>(2435);
+  const [totalCount, setTotalCount] = useState<number>(2784);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
   const fetchData = async () => {

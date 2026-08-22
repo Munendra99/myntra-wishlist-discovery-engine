@@ -1,7 +1,7 @@
 """
 App Store Ingestion Layer
 Scrapes iOS reviews for Myntra (App ID 907394059) using direct Apple Store review feeds,
-with optional Apify actor support, filters for wishlist keywords, and upserts into Supabase.
+with optional Apify actor support, filters for wishlist/friction keywords, and upserts into Supabase.
 """
 
 import os
@@ -11,7 +11,7 @@ from ingestion.db import matches_wishlist_keywords, upsert_raw_feedback
 
 MYNTRA_APP_ID = "907394059"  # Myntra Fashion App on Apple Store India
 
-def fetch_appstore_reviews_direct(max_pages: int = 5) -> List[Dict[str, Any]]:
+def fetch_appstore_reviews_direct(max_pages: int = 10) -> List[Dict[str, Any]]:
     """
     Fetches official Apple App Store customer reviews for Myntra India via Apple's public JSON API.
     """
@@ -31,7 +31,6 @@ def fetch_appstore_reviews_direct(max_pages: int = 5) -> List[Dict[str, Any]]:
                 break
 
             for entry in entries:
-                # The first entry in Apple RSS can sometimes be metadata, check for id
                 review_id = entry.get("id", {}).get("label")
                 if not review_id or review_id in seen_ids:
                     continue
@@ -62,12 +61,12 @@ def fetch_appstore_reviews_direct(max_pages: int = 5) -> List[Dict[str, Any]]:
             print(f"[AppStore] Note on page {page}: {e}")
             break
 
-    print(f"[AppStore] Evaluated App Store reviews, found {len(matching_records)} wishlist-related mentions.")
+    print(f"[AppStore] Evaluated {len(seen_ids)} App Store reviews, found {len(matching_records)} wishlist/friction mentions.")
     return matching_records
 
-def run_appstore_ingestion(max_items: int = 150) -> int:
+def run_appstore_ingestion(max_pages: int = 10) -> int:
     """Executes App Store ingestion and upsert into Supabase."""
-    records = fetch_appstore_reviews_direct(max_pages=5)
+    records = fetch_appstore_reviews_direct(max_pages=max_pages)
     if records:
         return upsert_raw_feedback(records)
     return 0

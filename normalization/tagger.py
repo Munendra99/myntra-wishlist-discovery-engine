@@ -18,7 +18,7 @@ from ingestion.db import get_supabase_client
 load_dotenv()
 
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-MODEL_NAME = "openai/gpt-oss-120b"
+MODEL_NAME = "llama-3.3-70b-versatile"
 
 # 6 Canonical PURE Wishlist Friction Themes (Zero Monetary Incentives)
 CANONICAL_WISHLIST_THEMES = {

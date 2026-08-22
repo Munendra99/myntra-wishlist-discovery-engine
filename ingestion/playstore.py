@@ -1,7 +1,7 @@
 """
-Play Store Scraper (Direct Method - No Apify needed)
-Scrapes recent reviews for Myntra (com.myntra.android) from Google Play Store,
-filters by wishlist/cart keywords, and upserts them into Supabase raw_feedback.
+Play Store Scraper (Direct Method - High Volume)
+Scrapes extensive reviews for Myntra (com.myntra.android) from Google Play Store,
+filters by wishlist/fashion friction keywords, and upserts them into Supabase raw_feedback.
 """
 
 from typing import List, Dict, Any
@@ -10,13 +10,14 @@ from ingestion.db import matches_wishlist_keywords, upsert_raw_feedback
 
 MYNTRA_PACKAGE_NAME = "com.myntra.android"
 
-def fetch_playstore_reviews(count: int = 500) -> List[Dict[str, Any]]:
+def fetch_playstore_reviews(count: int = 2000) -> List[Dict[str, Any]]:
     """
     Fetches both most relevant and newest reviews from Google Play Store directly.
     """
-    print(f"[PlayStore] Fetching reviews for {MYNTRA_PACKAGE_NAME}...")
+    print(f"[PlayStore] Fetching up to {count} reviews for {MYNTRA_PACKAGE_NAME}...")
     
     all_reviews = []
+    
     # 1. Fetch most relevant reviews
     try:
         rel_reviews, _ = reviews(
@@ -27,6 +28,7 @@ def fetch_playstore_reviews(count: int = 500) -> List[Dict[str, Any]]:
             count=count
         )
         all_reviews.extend(rel_reviews)
+        print(f"[PlayStore] Retrieved {len(rel_reviews)} relevant reviews.")
     except Exception as e:
         print(f"[PlayStore] Note on relevant reviews: {e}")
 
@@ -40,6 +42,7 @@ def fetch_playstore_reviews(count: int = 500) -> List[Dict[str, Any]]:
             count=count
         )
         all_reviews.extend(new_reviews)
+        print(f"[PlayStore] Retrieved {len(new_reviews)} newest reviews.")
     except Exception as e:
         print(f"[PlayStore] Note on newest reviews: {e}")
     
@@ -67,10 +70,10 @@ def fetch_playstore_reviews(count: int = 500) -> List[Dict[str, Any]]:
                 "is_processed": False
             })
             
-    print(f"[PlayStore] Evaluated {len(all_reviews)} reviews, found {len(matching_records)} wishlist-related mentions.")
+    print(f"[PlayStore] Evaluated {len(all_reviews)} reviews, found {len(matching_records)} wishlist/shopping friction mentions.")
     return matching_records
 
-def run_playstore_ingestion(count: int = 300) -> int:
+def run_playstore_ingestion(count: int = 1500) -> int:
     """Executes the Play Store scraping and upsert pipeline."""
     records = fetch_playstore_reviews(count=count)
     if records:
