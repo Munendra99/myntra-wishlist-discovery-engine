@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Search,
   Smartphone,
@@ -14,7 +14,7 @@ import {
   ToggleRight,
   RefreshCw,
 } from "lucide-react";
-import { supabase, RawFeedback } from "@/lib/supabase";
+import { RawFeedback } from "@/lib/supabase";
 import { EpistemicBadge } from "./DiscoveryFunnel";
 
 interface EvidenceExplorerProps {
@@ -24,7 +24,7 @@ interface EvidenceExplorerProps {
 export const EvidenceExplorer: React.FC<EvidenceExplorerProps> = ({
   initialReviews = [],
 }) => {
-  const [allReviews, setAllReviews] = useState<RawFeedback[]>(initialReviews);
+  const [reviews, setReviews] = useState<RawFeedback[]>(initialReviews);
   const [searchTerm, setSearchTerm] = useState("");
   const [platformFilter, setPlatformFilter] = useState<string>("all");
   const [themeFilter, setThemeFilter] = useState<string>("all");
@@ -32,31 +32,29 @@ export const EvidenceExplorer: React.FC<EvidenceExplorerProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [totalCount, setTotalCount] = useState<number>(3026);
 
-  const fetchFeedbackData = async () => {
+  const fetchFeedbackData = async (
+    targetPlatform = platformFilter,
+    targetTheme = themeFilter,
+    targetSearch = searchTerm,
+    targetCounter = showCounterEvidence
+  ) => {
     setIsLoading(true);
     try {
-      // 1. Try serverless API endpoint
-      const res = await fetch("/api/feedback?limit=120");
+      const params = new URLSearchParams({
+        platform: targetPlatform,
+        theme: targetTheme,
+        search: targetSearch.trim(),
+        counter: targetCounter ? "true" : "false",
+        limit: "100",
+      });
+
+      const res = await fetch(`/api/feedback?${params.toString()}`);
       if (res.ok) {
         const json = await res.json();
-        if (json.data && Array.isArray(json.data) && json.data.length > 0) {
-          setAllReviews(json.data);
-          if (json.count) setTotalCount(json.count);
-          setIsLoading(false);
-          return;
+        if (json.data && Array.isArray(json.data)) {
+          setReviews(json.data);
+          if (json.count !== undefined) setTotalCount(json.count);
         }
-      }
-
-      // 2. Direct Supabase fallback
-      const { data, count, error } = await supabase
-        .from("raw_feedback")
-        .select("*", { count: "exact" })
-        .order("scraped_at", { ascending: false })
-        .limit(120);
-
-      if (data && data.length > 0) {
-        setAllReviews(data as RawFeedback[]);
-        if (count) setTotalCount(count);
       }
     } catch (err) {
       console.error("Evidence Explorer fetch error:", err);
@@ -65,69 +63,14 @@ export const EvidenceExplorer: React.FC<EvidenceExplorerProps> = ({
     }
   };
 
+  // Re-fetch from database whenever platform, topic, search or counter filter changes
   useEffect(() => {
-    if (initialReviews && initialReviews.length > 0) {
-      setAllReviews(initialReviews);
-    } else {
-      fetchFeedbackData();
-    }
-  }, [initialReviews]);
+    const timer = setTimeout(() => {
+      fetchFeedbackData(platformFilter, themeFilter, searchTerm, showCounterEvidence);
+    }, 150);
 
-  // Client-side instant filtering on all retrieved reviews
-  const filteredReviews = useMemo(() => {
-    return allReviews.filter((item) => {
-      // Platform Filter
-      if (platformFilter !== "all" && item.platform !== platformFilter) {
-        return false;
-      }
-
-      // Thematic Filter
-      if (themeFilter !== "all") {
-        const text = (item.text || "").toLowerCase();
-        if (themeFilter === "fit" && !text.includes("fit") && !text.includes("size") && !text.includes("chart")) {
-          return false;
-        }
-        if (themeFilter === "fabric" && !text.includes("fabric") && !text.includes("cloth") && !text.includes("material") && !text.includes("cotton")) {
-          return false;
-        }
-        if (themeFilter === "wishlist" && !text.includes("wishlist") && !text.includes("save") && !text.includes("cart")) {
-          return false;
-        }
-        if (themeFilter === "share" && !text.includes("share") && !text.includes("friend") && !text.includes("whatsapp")) {
-          return false;
-        }
-        if (themeFilter === "stock" && !text.includes("stock") && !text.includes("sold") && !text.includes("avail")) {
-          return false;
-        }
-      }
-
-      // Search Filter
-      if (searchTerm.trim()) {
-        const term = searchTerm.toLowerCase().trim();
-        const text = (item.text || "").toLowerCase();
-        const author = (item.author || "").toLowerCase();
-        const keyword = (item.keyword_matched || "").toLowerCase();
-        if (!text.includes(term) && !author.includes(term) && !keyword.includes(term)) {
-          return false;
-        }
-      }
-
-      // Counter-Evidence Filter (Positive reviews showing satisfaction with sizing/quality)
-      if (showCounterEvidence) {
-        const text = (item.text || "").toLowerCase();
-        const isPositive =
-          text.includes("perfect") ||
-          text.includes("love") ||
-          text.includes("good") ||
-          text.includes("great") ||
-          text.includes("nice") ||
-          (item.rating !== null && item.rating >= 4);
-        if (!isPositive) return false;
-      }
-
-      return true;
-    });
-  }, [allReviews, platformFilter, themeFilter, searchTerm, showCounterEvidence]);
+    return () => clearTimeout(timer);
+  }, [platformFilter, themeFilter, searchTerm, showCounterEvidence]);
 
   const getPlatformIcon = (platform: string) => {
     switch (platform) {
@@ -276,18 +219,18 @@ export const EvidenceExplorer: React.FC<EvidenceExplorerProps> = ({
 
       {/* Signals Count Header */}
       <div className="flex items-center justify-between text-xs text-slate-400 font-mono px-1">
-        <span>Showing {filteredReviews.length} signals</span>
+        <span>Showing {reviews.length} signals</span>
         <span>Total Verified in Database: {totalCount.toLocaleString()}</span>
       </div>
 
       {/* Raw Signals Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[650px] overflow-y-auto pr-2 custom-scrollbar">
-        {filteredReviews.length === 0 && !isLoading ? (
+        {reviews.length === 0 && !isLoading ? (
           <div className="col-span-full py-16 text-center text-slate-500 text-sm bg-slate-900/40 rounded-2xl border border-slate-800">
             No matching signals found for "{searchTerm}". Try clearing search filters or refreshing data.
           </div>
         ) : (
-          filteredReviews.map((item) => (
+          reviews.map((item) => (
             <div
               key={item.id}
               className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between hover:border-slate-700 transition-all shadow-md group"
