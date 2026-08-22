@@ -1,7 +1,6 @@
 /**
  * Myntra Wishlist Customer Discovery Intelligence Engine — Data Models & Analytical Aggregates
- * Product Management Graduation Project (Part 1: Customer Discovery) — NextLeap
- * Grounded on 2,435+ authentic multi-source customer reviews & conversations.
+ * Grounded on 2,784+ authentic multi-source customer reviews & conversations.
  */
 
 export type EpistemicStatus = "OBSERVED" | "INFERRED" | "HYPOTHESIS" | "UNKNOWN";
@@ -23,9 +22,9 @@ export interface FunnelStage {
 export const DISCOVERY_FUNNEL: FunnelStage[] = [
   {
     stage: "Total Raw Public Signals",
-    count: 2435,
+    count: 2784,
     pctOfTotal: 100,
-    description: "Ingested from Google Play (1,709), Apple App Store (708), and Reddit/Forums (18)",
+    description: "Ingested from Google Play (1,994), Apple App Store (772), and Reddit/Forums (18)",
     epistemicStatus: "OBSERVED",
   },
   {

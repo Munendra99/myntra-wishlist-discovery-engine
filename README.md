@@ -7,7 +7,7 @@
 
 ## 🌟 Key Highlights
 
-- **2,435+ Real Customer Signals Ingested:** Synthesized from Google Play Store, Apple App Store, and Quora/Reddit forums.
+- **2,784+ Real Customer Signals Ingested:** Synthesized from Google Play Store (1,994), Apple App Store (772), and Quora/Reddit forums (18).
 - **6 Canonical Pure Wishlist Friction Themes:** Wishlist Clutter, Fabric Drape Ambiguity, Social Validation Gap, Size & Fit Doubts, Silent Size Depletion, and Passive Moodboarding.
 - **Zero Monetary Incentives:** Actionable Product/UX solutions (Outfit Builder, Social Polling, In-Stock Swapper, Daylight Video Hauls) that drive checkout velocity without margin-eroding discounts.
 - **Executive AI Discovery Copilot:** Live conversational intelligence grounded on real customer feedback via Groq Llama 3.3.

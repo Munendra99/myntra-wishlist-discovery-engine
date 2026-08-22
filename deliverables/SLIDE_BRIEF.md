@@ -18,10 +18,10 @@ Wishlist abandonment is **not a pricing problem**—it is an **information and c
 
 ---
 
-## 🔬 Slide 2: Data Quality & Evidence Funnel (2,435+ Signals)
+## 🔬 Slide 2: Data Quality & Evidence Funnel (2,784+ Signals)
 
 ```
-2,435 RAW PUBLIC SIGNALS (Google Play: 1,709 | App Store: 708 | Reddit: 18)
+2,784 RAW PUBLIC SIGNALS (Google Play: 1,994 | App Store: 772 | Reddit: 18)
       ↓ (Data Cleaning & Deduplication)
 1,674 FASHION SHOPPING RELEVANT (68.7%)
       ↓ (Wishlist Relevance Classifier)
