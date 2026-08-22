@@ -63,11 +63,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div>
               <div className="flex items-center space-x-2">
                 <span className="font-bold text-white tracking-tight text-sm sm:text-base">
-                  Myntra <span className="text-pink-400">Customer Discovery Engine</span>
+                  Myntra <span className="text-pink-400">Wishlist Purchase Discovery Engine</span>
                 </span>
               </div>
               <p className="text-[11px] text-slate-400 hidden sm:block">
-                AI-Powered Customer Discovery & Behavioral Intelligence
+                AI-Powered Customer Intelligence to Uncover Why Wishlisted Fashion Items Don’t Convert
               </p>
             </div>
           </div>

@@ -104,7 +104,7 @@ export default function DashboardPage() {
       {/* Footer */}
       <footer className="w-full border-t border-slate-800/80 bg-slate-950 py-8 text-xs text-slate-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p>© 2026 Myntra Customer Discovery Engine</p>
+          <p>© 2026 Myntra Wishlist Purchase Discovery Engine</p>
           <div className="flex items-center space-x-3 text-slate-400">
             <span>Supabase PostgreSQL</span>
             <span>•</span>
