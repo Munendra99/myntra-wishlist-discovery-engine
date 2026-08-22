@@ -23,15 +23,15 @@ Wishlist abandonment is **not a pricing problem**—it is an **information and c
 ```
 2,784 RAW PUBLIC SIGNALS (Google Play: 1,994 | App Store: 772 | Reddit: 18)
       ↓ (Data Cleaning & Deduplication)
-1,674 FASHION SHOPPING RELEVANT (68.7%)
+1,926 FASHION SHOPPING RELEVANT (69.2%)
       ↓ (Wishlist Relevance Classifier)
-  932 WISHLIST & SHORTLIST SIGNALS (38.3%)
+1,086 WISHLIST & SHORTLIST SIGNALS (39.0%)
       ↓ (Intent Classifier)
-  641 HIGH-INTENT SIGNALS (26.3%)
+  738 HIGH-INTENT SIGNALS (26.5%)
       ↓ (Cross-Source Validation)
     6 CANONICAL FRICTION CLUSTERS
       ↓ (Opportunity Scoring Model)
-    3 PRIORITY PRODUCT OPPORTUNITIES
+    4 PRIORITY UNMET NEEDS
       ↓
     1 CORE UNMET NEED: Self-Service Pre-Purchase Decision Confidence
 ```
