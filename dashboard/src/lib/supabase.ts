@@ -1,9 +1,14 @@
 import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl =
-  process.env.NEXT_PUBLIC_SUPABASE_URL || "https://rlmhvekrfynxztnisfpd.supabase.co";
+  process.env.NEXT_PUBLIC_SUPABASE_URL ||
+  process.env.SUPABASE_URL ||
+  "https://rlmhvekrfynxztnisfpd.supabase.co";
+
 const supabaseAnonKey =
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-anon-key";
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+  process.env.SUPABASE_ANON_KEY ||
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJsbWh2ZWtyZnlueHp0bmlzZnBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcxNjk5MDEsImV4cCI6MjEwMjc0NTkwMX0.IlM7ZGdS_g5uSbR85xtoahPcugvqWihpmQ4CVOxbb6E";
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 

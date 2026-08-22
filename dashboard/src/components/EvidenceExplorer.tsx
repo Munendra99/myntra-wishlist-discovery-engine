@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import {
   Search,
-  Filter,
   Smartphone,
   Apple,
   HelpCircle,
@@ -13,11 +12,8 @@ import {
   ShieldCheck,
   ToggleLeft,
   ToggleRight,
-  Sparkles,
-  Quote,
-  CheckCircle2,
 } from "lucide-react";
-import { supabase, RawFeedback } from "@/lib/supabase";
+import { RawFeedback } from "@/lib/supabase";
 import { EpistemicBadge } from "./DiscoveryFunnel";
 
 interface EvidenceExplorerProps {
@@ -27,7 +23,7 @@ interface EvidenceExplorerProps {
 export const EvidenceExplorer: React.FC<EvidenceExplorerProps> = ({
   initialReviews,
 }) => {
-  const [reviews, setReviews] = useState<RawFeedback[]>(initialReviews);
+  const [reviews, setReviews] = useState<RawFeedback[]>(initialReviews || []);
   const [searchTerm, setSearchTerm] = useState("");
   const [platformFilter, setPlatformFilter] = useState<string>("all");
   const [themeFilter, setThemeFilter] = useState<string>("all");
@@ -35,39 +31,33 @@ export const EvidenceExplorer: React.FC<EvidenceExplorerProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [totalCount, setTotalCount] = useState<number>(2435);
 
+  useEffect(() => {
+    if (initialReviews && initialReviews.length > 0 && reviews.length === 0) {
+      setReviews(initialReviews);
+    }
+  }, [initialReviews]);
+
   const fetchReviews = async () => {
     setIsLoading(true);
     try {
-      let query = supabase
-        .from("raw_feedback")
-        .select("*", { count: "exact" })
-        .order("scraped_at", { ascending: false })
-        .limit(60);
+      const params = new URLSearchParams({
+        platform: platformFilter,
+        theme: themeFilter,
+        search: searchTerm.trim(),
+        counter: showCounterEvidence ? "true" : "false",
+        limit: "60",
+      });
 
-      if (platformFilter !== "all") {
-        query = query.eq("platform", platformFilter);
-      }
-
-      if (themeFilter !== "all") {
-        query = query.ilike("text", `%${themeFilter}%`);
-      }
-
-      if (searchTerm.trim()) {
-        query = query.ilike("text", `%${searchTerm.trim()}%`);
-      }
-
-      if (showCounterEvidence) {
-        // Look for reviews expressing positive satisfaction with fit/sizing/checkout to surface counter-evidence
-        query = query.or("text.ilike.%perfect fit%,text.ilike.%love the dress%,text.ilike.%good material%");
-      }
-
-      const { data, count, error } = await query;
-      if (data) {
-        setReviews(data as RawFeedback[]);
-        if (count !== null) setTotalCount(count);
+      const res = await fetch(`/api/feedback?${params.toString()}`);
+      if (res.ok) {
+        const json = await res.json();
+        if (json.data && Array.isArray(json.data)) {
+          setReviews(json.data);
+          if (json.count) setTotalCount(json.count);
+        }
       }
     } catch (err) {
-      console.error("Error querying evidence database:", err);
+      console.error("Error querying evidence API:", err);
     } finally {
       setIsLoading(false);
     }
@@ -76,7 +66,7 @@ export const EvidenceExplorer: React.FC<EvidenceExplorerProps> = ({
   useEffect(() => {
     const timer = setTimeout(() => {
       fetchReviews();
-    }, 250);
+    }, 200);
     return () => clearTimeout(timer);
   }, [platformFilter, themeFilter, searchTerm, showCounterEvidence]);
 
