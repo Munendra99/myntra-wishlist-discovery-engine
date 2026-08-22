@@ -30,7 +30,7 @@ export const EvidenceExplorer: React.FC<EvidenceExplorerProps> = ({
   const [themeFilter, setThemeFilter] = useState<string>("all");
   const [showCounterEvidence, setShowCounterEvidence] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [totalCount, setTotalCount] = useState<number>(2435);
+  const [totalCount, setTotalCount] = useState<number>(3026);
 
   const fetchFeedbackData = async () => {
     setIsLoading(true);

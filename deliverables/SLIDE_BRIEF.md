@@ -116,7 +116,7 @@ Crowdsourced Sizing Benchmark + Interactive Look Builder + WhatsApp Polling.
 
 ## ⚖️ Slide 8: Epistemic Rigor & Data Honesty Audit
 
-- 🟢 **OBSERVED:** Directly extracted from 2,435+ public user reviews.
+- 🟢 **OBSERVED:** Directly extracted from 3,026+ public user reviews.
 - 🔵 **INFERRED:** Multi-signal behavioral clustering synthesized via Groq Llama 3.3.
 - 🟡 **HYPOTHESIS:** Proposed zero-discount product roadmap interventions.
 - ⚪ **UNKNOWN:** Exact individual wishlist depth distribution (*First-party clickstream schema provided*).
