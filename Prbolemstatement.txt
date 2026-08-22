@@ -1,0 +1,9 @@
+Problem Statement — AI-Powered Discovery Engine
+
+Myntra's wishlist feature captures one of the platform's strongest signals of purchase intent — users have already identified a product they want, browsed it, and chosen to save it for later. Yet only a small fraction of wishlisted items ever convert into purchases within 30 days, even though these users have already cleared the hardest part of the funnel: product discovery.
+
+The reasons this conversion doesn't happen are not currently known. They could stem from unresolved product uncertainty (fit, quality, styling), external decision-making that happens outside the app (price comparison, seeking opinions from friends, waiting for occasions), the wishlist being used as a passive bookmark rather than a purchase queue, or something else entirely. Without knowing which of these dominates — and for which user segments — any solution risks solving a problem users don't actually have.
+
+The task: before proposing any fix, build an AI-powered system that analyzes public, at-scale user feedback (App/Play Store reviews, Reddit, fashion community forums, social media, YouTube comments) to surface why wishlisted fashion products stall before purchase. The system should go beyond sentiment tagging — it needs to surface, cluster, and where possible quantify distinct opportunity areas (e.g., "size/fit anxiety," "price-drop waiting behavior," "wishlist-as-bookmark behavior," "need for external validation before buying") so that the most promising one(s) can be prioritized for deeper, primary user research in Part 3.
+
+Output of this stage: a working discovery pipeline (built with Claude, GPT, an agent/workflow tool like n8n or Zapier, or a comparable AI-native stack) that ingests real user conversations and produces a structured, comparable view of candidate opportunity areas — not just a summary of what users said, but a ranked or clustered view of why wishlist-to-purchase conversion breaks down.

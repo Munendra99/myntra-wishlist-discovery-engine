@@ -1,0 +1,278 @@
+"use client";
+
+import React, { useState, useRef, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import {
+  Sparkles,
+  Send,
+  Bot,
+  User,
+  Loader2,
+  HelpCircle,
+} from "lucide-react";
+
+interface Message {
+  role: "user" | "assistant";
+  content: string;
+}
+
+export const AiCopilot: React.FC = () => {
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      role: "assistant",
+      content:
+        "**Hello! I am your Myntra Discovery Copilot** 🛍️\n\nI have synthesized over **2,400+ verified customer reviews** across Google Play Store, Apple App Store, and Forums.\n\nAsk me anything about why shoppers stall on wishlists, specific category frictions (e.g. dresses, footwear), or actionable product growth strategies!",
+    },
+  ]);
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isLoading]);
+
+  const quickPrompts = [
+    "Why are users dropping off from the wishlist?",
+    "Why do users hesitate to purchase dresses?",
+    "What are the top complaints regarding platform fees?",
+    "Suggest 3 product features to unlock wishlist conversions",
+  ];
+
+  const handleSend = async (userText?: string) => {
+    const query = userText || input;
+    if (!query.trim() || isLoading) return;
+
+    const newMessages: Message[] = [
+      ...messages,
+      { role: "user", content: query },
+    ];
+    setMessages(newMessages);
+    if (!userText) setInput("");
+    setIsLoading(true);
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: newMessages.map((m) => ({
+            role: m.role,
+            content: m.content,
+          })),
+        }),
+      });
+
+      const data = await res.json();
+      if (data.reply) {
+        setMessages((prev) => [
+          ...prev,
+          { role: "assistant", content: data.reply },
+        ]);
+      } else {
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "assistant",
+            content: "⚠️ " + (data.error || "Unable to generate AI answer."),
+          },
+        ]);
+      }
+    } catch (err) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: "⚠️ Network error connecting to Groq AI service.",
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <section className="mb-12">
+      <div className="rounded-3xl bg-gradient-to-b from-slate-900 via-slate-900/95 to-slate-950 border border-slate-800 shadow-2xl overflow-hidden">
+        {/* Header */}
+        <div className="px-6 py-4 bg-slate-950/80 border-b border-slate-800 flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-pink-500 to-rose-500 flex items-center justify-center shadow-md shadow-pink-500/25">
+              <Sparkles className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <h3 className="font-bold text-white text-sm flex items-center gap-1.5">
+                Executive AI Discovery Copilot
+                <span className="text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                  Grounded on 2.4k+ Reviews
+                </span>
+              </h3>
+              <p className="text-[11px] text-slate-400">
+                Live Llama 3.3 strategic Q&A powered by Groq & Supabase
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Chat Body */}
+        <div className="p-6">
+          {/* Quick Prompts Pills */}
+          <div className="mb-4">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 block mb-2">
+              Suggested Strategy Queries:
+            </span>
+            <div className="flex flex-wrap gap-2">
+              {quickPrompts.map((prompt, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => handleSend(prompt)}
+                  disabled={isLoading}
+                  className="text-xs bg-slate-950 hover:bg-slate-800 text-slate-300 hover:text-pink-300 border border-slate-800 hover:border-pink-500/40 px-3 py-1.5 rounded-xl transition-all text-left shadow-sm active:scale-95 disabled:opacity-50"
+                >
+                  💡 {prompt}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Messages List */}
+          <div className="h-[420px] overflow-y-auto pr-2 space-y-4 mb-4 custom-scrollbar bg-slate-950/60 rounded-2xl p-4 border border-slate-800/80">
+            {messages.map((m, idx) => (
+              <div
+                key={idx}
+                className={`flex items-start space-x-3 ${
+                  m.role === "user" ? "justify-end" : "justify-start"
+                }`}
+              >
+                {m.role === "assistant" && (
+                  <div className="w-8 h-8 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center shrink-0 mt-1">
+                    <Bot className="w-4 h-4 text-pink-400" />
+                  </div>
+                )}
+
+                <div
+                  className={`max-w-[90%] rounded-2xl px-5 py-4 text-xs leading-relaxed ${
+                    m.role === "user"
+                      ? "bg-gradient-to-r from-pink-500 to-rose-600 text-white font-medium shadow-md"
+                      : "bg-slate-900/90 border border-slate-800 text-slate-200 shadow-md"
+                  }`}
+                >
+                  {m.role === "user" ? (
+                    <div className="whitespace-pre-wrap font-sans text-sm font-medium">
+                      {m.content}
+                    </div>
+                  ) : (
+                    <div className="markdown-content text-slate-200 space-y-3">
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                          h1: ({ node, ...props }) => (
+                            <h1 className="text-base font-bold text-white mb-2 pb-1 border-b border-slate-800" {...props} />
+                          ),
+                          h2: ({ node, ...props }) => (
+                            <h2 className="text-sm font-bold text-pink-300 mt-3 mb-1.5 flex items-center gap-1.5" {...props} />
+                          ),
+                          h3: ({ node, ...props }) => (
+                            <h3 className="text-xs font-bold text-slate-100 mt-2 mb-1" {...props} />
+                          ),
+                          p: ({ node, ...props }) => (
+                            <p className="mb-2 leading-relaxed text-slate-300" {...props} />
+                          ),
+                          strong: ({ node, ...props }) => (
+                            <strong className="font-bold text-white bg-slate-800/80 px-1 py-0.5 rounded" {...props} />
+                          ),
+                          ul: ({ node, ...props }) => (
+                            <ul className="list-disc list-inside space-y-1 my-2 pl-1 text-slate-300" {...props} />
+                          ),
+                          ol: ({ node, ...props }) => (
+                            <ol className="list-decimal list-inside space-y-1 my-2 pl-1 text-slate-300" {...props} />
+                          ),
+                          li: ({ node, ...props }) => (
+                            <li className="leading-relaxed" {...props} />
+                          ),
+                          blockquote: ({ node, ...props }) => (
+                            <blockquote className="border-l-2 border-pink-500 pl-3 py-1 my-2 italic bg-slate-950/80 rounded text-slate-300" {...props} />
+                          ),
+                          table: ({ node, ...props }) => (
+                            <div className="overflow-x-auto my-3 rounded-xl border border-slate-800 bg-slate-950">
+                              <table className="w-full text-left text-xs border-collapse" {...props} />
+                            </div>
+                          ),
+                          thead: ({ node, ...props }) => (
+                            <thead className="bg-slate-800/80 text-pink-300 font-semibold border-b border-slate-700" {...props} />
+                          ),
+                          tbody: ({ node, ...props }) => (
+                            <tbody className="divide-y divide-slate-800 text-slate-300" {...props} />
+                          ),
+                          th: ({ node, ...props }) => (
+                            <th className="px-3 py-2 font-bold text-slate-200" {...props} />
+                          ),
+                          td: ({ node, ...props }) => (
+                            <td className="px-3 py-2" {...props} />
+                          ),
+                          code: ({ node, ...props }) => (
+                            <code className="bg-slate-950 text-pink-300 px-1.5 py-0.5 rounded font-mono text-[11px] border border-slate-800" {...props} />
+                          ),
+                        }}
+                      >
+                        {m.content}
+                      </ReactMarkdown>
+                    </div>
+                  )}
+                </div>
+
+                {m.role === "user" && (
+                  <div className="w-8 h-8 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center shrink-0 mt-1">
+                    <User className="w-4 h-4 text-slate-300" />
+                  </div>
+                )}
+              </div>
+            ))}
+
+            {isLoading && (
+              <div className="flex items-center space-x-3 text-slate-400 text-xs py-3 pl-2">
+                <div className="w-8 h-8 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center shrink-0">
+                  <Loader2 className="w-4 h-4 text-pink-400 animate-spin" />
+                </div>
+                <span className="font-mono text-slate-300 animate-pulse">
+                  Analyzing 2,400+ reviews & synthesizing executive answer...
+                </span>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Input Box */}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSend();
+            }}
+            className="flex items-center space-x-2"
+          >
+            <input
+              type="text"
+              placeholder="Ask anything (e.g. 'Why do users drop off from dresses?' or 'How to fix return anxiety?')..."
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              disabled={isLoading}
+              className="flex-1 bg-slate-950 border border-slate-800 text-white text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-pink-500 transition-colors shadow-inner"
+            />
+            <button
+              type="submit"
+              disabled={isLoading || !input.trim()}
+              className="bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white p-3 rounded-xl transition-all shadow-md shadow-pink-500/25 active:scale-95 disabled:opacity-50"
+            >
+              <Send className="w-4 h-4" />
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  );
+};
