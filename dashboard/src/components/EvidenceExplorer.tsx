@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Search,
   Smartphone,
@@ -12,8 +12,9 @@ import {
   ShieldCheck,
   ToggleLeft,
   ToggleRight,
+  RefreshCw,
 } from "lucide-react";
-import { RawFeedback } from "@/lib/supabase";
+import { supabase, RawFeedback } from "@/lib/supabase";
 import { EpistemicBadge } from "./DiscoveryFunnel";
 
 interface EvidenceExplorerProps {
@@ -21,9 +22,9 @@ interface EvidenceExplorerProps {
 }
 
 export const EvidenceExplorer: React.FC<EvidenceExplorerProps> = ({
-  initialReviews,
+  initialReviews = [],
 }) => {
-  const [reviews, setReviews] = useState<RawFeedback[]>(initialReviews || []);
+  const [allReviews, setAllReviews] = useState<RawFeedback[]>(initialReviews);
   const [searchTerm, setSearchTerm] = useState("");
   const [platformFilter, setPlatformFilter] = useState<string>("all");
   const [themeFilter, setThemeFilter] = useState<string>("all");
@@ -31,44 +32,102 @@ export const EvidenceExplorer: React.FC<EvidenceExplorerProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [totalCount, setTotalCount] = useState<number>(2435);
 
-  useEffect(() => {
-    if (initialReviews && initialReviews.length > 0 && reviews.length === 0) {
-      setReviews(initialReviews);
-    }
-  }, [initialReviews]);
-
-  const fetchReviews = async () => {
+  const fetchFeedbackData = async () => {
     setIsLoading(true);
     try {
-      const params = new URLSearchParams({
-        platform: platformFilter,
-        theme: themeFilter,
-        search: searchTerm.trim(),
-        counter: showCounterEvidence ? "true" : "false",
-        limit: "60",
-      });
-
-      const res = await fetch(`/api/feedback?${params.toString()}`);
+      // 1. Try serverless API endpoint
+      const res = await fetch("/api/feedback?limit=120");
       if (res.ok) {
         const json = await res.json();
-        if (json.data && Array.isArray(json.data)) {
-          setReviews(json.data);
+        if (json.data && Array.isArray(json.data) && json.data.length > 0) {
+          setAllReviews(json.data);
           if (json.count) setTotalCount(json.count);
+          setIsLoading(false);
+          return;
         }
       }
+
+      // 2. Direct Supabase fallback
+      const { data, count, error } = await supabase
+        .from("raw_feedback")
+        .select("*", { count: "exact" })
+        .order("scraped_at", { ascending: false })
+        .limit(120);
+
+      if (data && data.length > 0) {
+        setAllReviews(data as RawFeedback[]);
+        if (count) setTotalCount(count);
+      }
     } catch (err) {
-      console.error("Error querying evidence API:", err);
+      console.error("Evidence Explorer fetch error:", err);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      fetchReviews();
-    }, 200);
-    return () => clearTimeout(timer);
-  }, [platformFilter, themeFilter, searchTerm, showCounterEvidence]);
+    if (initialReviews && initialReviews.length > 0) {
+      setAllReviews(initialReviews);
+    } else {
+      fetchFeedbackData();
+    }
+  }, [initialReviews]);
+
+  // Client-side instant filtering on all retrieved reviews
+  const filteredReviews = useMemo(() => {
+    return allReviews.filter((item) => {
+      // Platform Filter
+      if (platformFilter !== "all" && item.platform !== platformFilter) {
+        return false;
+      }
+
+      // Thematic Filter
+      if (themeFilter !== "all") {
+        const text = (item.text || "").toLowerCase();
+        if (themeFilter === "fit" && !text.includes("fit") && !text.includes("size") && !text.includes("chart")) {
+          return false;
+        }
+        if (themeFilter === "fabric" && !text.includes("fabric") && !text.includes("cloth") && !text.includes("material") && !text.includes("cotton")) {
+          return false;
+        }
+        if (themeFilter === "wishlist" && !text.includes("wishlist") && !text.includes("save") && !text.includes("cart")) {
+          return false;
+        }
+        if (themeFilter === "share" && !text.includes("share") && !text.includes("friend") && !text.includes("whatsapp")) {
+          return false;
+        }
+        if (themeFilter === "stock" && !text.includes("stock") && !text.includes("sold") && !text.includes("avail")) {
+          return false;
+        }
+      }
+
+      // Search Filter
+      if (searchTerm.trim()) {
+        const term = searchTerm.toLowerCase().trim();
+        const text = (item.text || "").toLowerCase();
+        const author = (item.author || "").toLowerCase();
+        const keyword = (item.keyword_matched || "").toLowerCase();
+        if (!text.includes(term) && !author.includes(term) && !keyword.includes(term)) {
+          return false;
+        }
+      }
+
+      // Counter-Evidence Filter (Positive reviews showing satisfaction with sizing/quality)
+      if (showCounterEvidence) {
+        const text = (item.text || "").toLowerCase();
+        const isPositive =
+          text.includes("perfect") ||
+          text.includes("love") ||
+          text.includes("good") ||
+          text.includes("great") ||
+          text.includes("nice") ||
+          (item.rating !== null && item.rating >= 4);
+        if (!isPositive) return false;
+      }
+
+      return true;
+    });
+  }, [allReviews, platformFilter, themeFilter, searchTerm, showCounterEvidence]);
 
   const getPlatformIcon = (platform: string) => {
     switch (platform) {
@@ -100,26 +159,38 @@ export const EvidenceExplorer: React.FC<EvidenceExplorerProps> = ({
           </p>
         </div>
 
-        {/* Counter-Evidence Toggle Button */}
-        <button
-          onClick={() => setShowCounterEvidence(!showCounterEvidence)}
-          className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all border shrink-0 ${
-            showCounterEvidence
-              ? "bg-amber-500/10 text-amber-300 border-amber-500/30"
-              : "bg-slate-900 text-slate-400 border-slate-800 hover:text-slate-200"
-          }`}
-        >
-          {showCounterEvidence ? (
-            <ToggleRight className="w-4 h-4 text-amber-400" />
-          ) : (
-            <ToggleLeft className="w-4 h-4 text-slate-500" />
-          )}
-          <span>
-            {showCounterEvidence
-              ? "Viewing Counter-Evidence Signals"
-              : "Filter Contradictory Evidence"}
-          </span>
-        </button>
+        {/* Action buttons */}
+        <div className="flex items-center space-x-2 shrink-0">
+          <button
+            onClick={() => fetchFeedbackData()}
+            disabled={isLoading}
+            className="p-2.5 rounded-xl bg-slate-900 text-slate-300 hover:text-white border border-slate-800 hover:bg-slate-800 transition-all text-xs flex items-center gap-1.5"
+            title="Reload Evidence"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin text-pink-400" : ""}`} />
+            <span className="hidden sm:inline">Refresh</span>
+          </button>
+
+          <button
+            onClick={() => setShowCounterEvidence(!showCounterEvidence)}
+            className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all border ${
+              showCounterEvidence
+                ? "bg-amber-500/10 text-amber-300 border-amber-500/30 shadow-md shadow-amber-500/10"
+                : "bg-slate-900 text-slate-400 border-slate-800 hover:text-slate-200"
+            }`}
+          >
+            {showCounterEvidence ? (
+              <ToggleRight className="w-4 h-4 text-amber-400" />
+            ) : (
+              <ToggleLeft className="w-4 h-4 text-slate-500" />
+            )}
+            <span>
+              {showCounterEvidence
+                ? "Viewing Counter-Evidence"
+                : "Filter Contradictory Evidence"}
+            </span>
+          </button>
+        </div>
       </div>
 
       {/* Filter & Search Bar */}
@@ -183,9 +254,9 @@ export const EvidenceExplorer: React.FC<EvidenceExplorerProps> = ({
         </div>
       </div>
 
-      {/* Loading state */}
+      {/* Loading state indicator */}
       {isLoading && (
-        <div className="flex items-center justify-center space-x-2 py-4 text-xs text-pink-400 font-mono">
+        <div className="flex items-center justify-center space-x-2 py-3 text-xs text-pink-400 font-mono">
           <Loader2 className="w-4 h-4 animate-spin" />
           <span>Retrieving verified customer signals from Supabase...</span>
         </div>
@@ -203,14 +274,20 @@ export const EvidenceExplorer: React.FC<EvidenceExplorerProps> = ({
         </div>
       )}
 
+      {/* Signals Count Header */}
+      <div className="flex items-center justify-between text-xs text-slate-400 font-mono px-1">
+        <span>Showing {filteredReviews.length} signals</span>
+        <span>Total Verified in Database: {totalCount.toLocaleString()}</span>
+      </div>
+
       {/* Raw Signals Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[650px] overflow-y-auto pr-2 custom-scrollbar">
-        {reviews.length === 0 && !isLoading ? (
+        {filteredReviews.length === 0 && !isLoading ? (
           <div className="col-span-full py-16 text-center text-slate-500 text-sm bg-slate-900/40 rounded-2xl border border-slate-800">
-            No matching signals found for "{searchTerm}". Try clearing search filters.
+            No matching signals found for "{searchTerm}". Try clearing search filters or refreshing data.
           </div>
         ) : (
-          reviews.map((item) => (
+          filteredReviews.map((item) => (
             <div
               key={item.id}
               className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between hover:border-slate-700 transition-all shadow-md group"
