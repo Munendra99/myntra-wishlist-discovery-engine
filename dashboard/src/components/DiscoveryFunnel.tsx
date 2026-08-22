@@ -61,7 +61,7 @@ export const DiscoveryFunnel: React.FC = () => {
           <div className="flex items-center justify-between flex-wrap gap-2 mb-4">
             <div className="flex items-center space-x-2 text-pink-400 text-xs font-bold uppercase tracking-wider">
               <Compass className="w-4 h-4 text-pink-400" />
-              <span>NextLeap PM Graduation Project • Executive Customer Discovery Brief</span>
+              <span>Customer Discovery Intelligence</span>
             </div>
             <div className="flex items-center space-x-2">
               <EpistemicBadge status="INFERRED" />
@@ -133,7 +133,7 @@ export const DiscoveryFunnel: React.FC = () => {
                 <span className="text-xs text-emerald-400 font-mono">Score 94.2</span>
               </div>
               <p className="text-[11px] text-slate-400 leading-relaxed">
-                Non-monetary confidence builders converting intent in &lt;48h.
+                Self-service confidence builders converting intent in &lt;48h.
               </p>
             </div>
           </div>
