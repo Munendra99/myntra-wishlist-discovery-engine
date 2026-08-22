@@ -8,7 +8,6 @@ import { MetricsCards } from "@/components/MetricsCards";
 import { WishlistMotivations } from "@/components/WishlistMotivations";
 import { BehavioralSegments } from "@/components/BehavioralSegments";
 import { WishlistJourney } from "@/components/WishlistJourney";
-import { FrictionTaxonomy } from "@/components/FrictionTaxonomy";
 import { PurchasePostponement } from "@/components/PurchasePostponement";
 import { OpportunityPrioritization } from "@/components/OpportunityPrioritization";
 import { EvidenceExplorer } from "@/components/EvidenceExplorer";
@@ -80,17 +79,17 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Module 2: Motivations */}
+        {/* Module 2: AI Copilot (2nd place) */}
+        {activeTab === "copilot" && <AiCopilot />}
+
+        {/* Module 3: Motivations */}
         {activeTab === "motivations" && <WishlistMotivations />}
 
-        {/* Module 3: User Personas */}
+        {/* Module 4: User Personas */}
         {activeTab === "personas" && <BehavioralSegments />}
 
-        {/* Module 4: Journey & Intent Spectrum */}
+        {/* Module 5: Journey & Intent Spectrum */}
         {activeTab === "journey" && <WishlistJourney />}
-
-        {/* Module 5: Friction Taxonomy & Uncertainty */}
-        {activeTab === "blockers" && <FrictionTaxonomy />}
 
         {/* Module 6: Purchase Postponement */}
         {activeTab === "postponement" && <PurchasePostponement />}
@@ -102,9 +101,6 @@ export default function DashboardPage() {
         {activeTab === "evidence" && (
           <EvidenceExplorer initialReviews={reviews} />
         )}
-
-        {/* Module 9: Traceable AI Copilot */}
-        {activeTab === "copilot" && <AiCopilot />}
       </main>
 
       {/* Footer */}

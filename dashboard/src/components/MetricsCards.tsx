@@ -4,11 +4,8 @@ import React from "react";
 import {
   TrendingUp,
   AlertTriangle,
-  Flame,
-  Zap,
   ShoppingBag,
   FolderKanban,
-  Sparkles,
 } from "lucide-react";
 import { InsightTheme } from "@/lib/supabase";
 
@@ -28,7 +25,7 @@ export const MetricsCards: React.FC<MetricsCardsProps> = ({
   ).length;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
       {/* Metric 1: Total Customer Signals */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 p-5 border border-slate-800/80 shadow-lg group hover:border-slate-700/80 transition-all">
         <div className="flex items-center justify-between mb-3">
@@ -95,28 +92,6 @@ export const MetricsCards: React.FC<MetricsCardsProps> = ({
           Decision fatigue, fabric doubt & second opinions
         </p>
         <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-rose-500/5 rounded-full blur-xl group-hover:bg-rose-500/10 transition-all"></div>
-      </div>
-
-      {/* Metric 4: Projected Conversion Lift (Zero Discounts) */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 p-5 border border-slate-800/80 shadow-lg group hover:border-slate-700/80 transition-all">
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-            Zero-Discount GMV Unlock
-          </span>
-          <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-            <Zap className="w-4 h-4" />
-          </div>
-        </div>
-        <div className="flex items-baseline space-x-2">
-          <span className="text-3xl font-extrabold text-emerald-400 tracking-tight">
-            +24.6%
-          </span>
-          <span className="text-xs text-slate-400 font-medium">Conversion Lift</span>
-        </div>
-        <p className="text-xs text-slate-400 mt-2">
-          Via Outfit Builder, Social Polling & Fit Matrices
-        </p>
-        <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-emerald-500/5 rounded-full blur-xl group-hover:bg-emerald-500/10 transition-all"></div>
       </div>
     </div>
   );

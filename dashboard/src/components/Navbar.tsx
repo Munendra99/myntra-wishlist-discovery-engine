@@ -7,7 +7,6 @@ import {
   Layers,
   Users,
   Compass,
-  AlertTriangle,
   Target,
   FileText,
   Bot,
@@ -17,14 +16,13 @@ import {
 
 export type DiscoveryTab =
   | "overview"
+  | "copilot"
   | "motivations"
   | "personas"
   | "journey"
-  | "blockers"
   | "postponement"
   | "opportunities"
-  | "evidence"
-  | "copilot";
+  | "evidence";
 
 interface NavbarProps {
   activeTab: DiscoveryTab;
@@ -43,14 +41,13 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const tabs: { id: DiscoveryTab; label: string; icon: React.ReactNode }[] = [
     { id: "overview", label: "Overview & Funnel", icon: <Compass className="w-3.5 h-3.5" /> },
+    { id: "copilot", label: "AI Copilot", icon: <Bot className="w-3.5 h-3.5" /> },
     { id: "motivations", label: "Motivations", icon: <Heart className="w-3.5 h-3.5" /> },
     { id: "personas", label: "User Personas", icon: <Users className="w-3.5 h-3.5" /> },
     { id: "journey", label: "Journey & Intent", icon: <Layers className="w-3.5 h-3.5" /> },
-    { id: "blockers", label: "Friction & Uncertainty", icon: <AlertTriangle className="w-3.5 h-3.5" /> },
     { id: "postponement", label: "Postponement", icon: <Clock className="w-3.5 h-3.5" /> },
     { id: "opportunities", label: "Unmet Needs & Opportunities", icon: <Target className="w-3.5 h-3.5" /> },
     { id: "evidence", label: "Evidence Explorer", icon: <FileText className="w-3.5 h-3.5" /> },
-    { id: "copilot", label: "AI Copilot", icon: <Bot className="w-3.5 h-3.5" /> },
   ];
 
   return (

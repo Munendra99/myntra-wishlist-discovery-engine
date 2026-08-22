@@ -75,12 +75,6 @@ export const WishlistJourney: React.FC = () => {
                         <span className="text-[10px] font-mono font-bold bg-slate-900 px-2 py-0.5 rounded border border-slate-800 text-slate-400">
                           Step 0{step.stepNumber}
                         </span>
-                        {step.dropOffProbability > 0 && (
-                          <span className="text-[10px] font-bold text-rose-400 flex items-center">
-                            <TrendingDown className="w-3 h-3 mr-0.5" />
-                            {step.dropOffProbability}% drop
-                          </span>
-                        )}
                       </div>
                       <h4 className="text-xs font-bold text-white line-clamp-1">
                         {step.name}
@@ -138,12 +132,6 @@ export const WishlistJourney: React.FC = () => {
               <p className="text-xs text-rose-200 leading-relaxed font-medium">
                 {selectedStep.alternativeBranch}
               </p>
-            </div>
-            <div className="text-[11px] text-slate-400 font-mono mt-3">
-              Drop-off risk:{" "}
-              <strong className="text-white">
-                {selectedStep.dropOffProbability}%
-              </strong>
             </div>
           </div>
         </div>

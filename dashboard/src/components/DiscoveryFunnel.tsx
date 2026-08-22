@@ -71,20 +71,12 @@ export const DiscoveryFunnel: React.FC = () => {
             </div>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-3">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-6">
             Why Fashion Shoppers Stall on the Myntra Wishlist
           </h2>
-          <p className="text-sm text-slate-300 leading-relaxed mb-6 max-w-4xl">
-            Wishlist abandonment is <strong className="text-white">not a pricing problem</strong>—it is an{" "}
-            <strong className="text-pink-300">information and confidence deficit</strong>. Shoppers use the wishlist as a
-            temporary holding pen while attempting to resolve <span className="text-amber-300 font-semibold">Size & Fit ambiguity</span>,{" "}
-            <span className="text-sky-300 font-semibold">fabric texture doubts</span>, and{" "}
-            <span className="text-indigo-300 font-semibold">the need for external social validation</span> via WhatsApp screenshots.
-            When unorganized saved items accumulate past 30+ items, <strong className="text-rose-300">cognitive decision fatigue</strong> causes permanent cart drop-off.
-          </p>
 
-          {/* 4 Core Discovery Snapshot Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
+          {/* Core Discovery Snapshot Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
             <div className="rounded-2xl bg-slate-950/80 border border-slate-800/80 p-4">
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
                 Dominant Behavioral Persona
@@ -108,32 +100,6 @@ export const DiscoveryFunnel: React.FC = () => {
               </div>
               <p className="text-[11px] text-slate-400 leading-relaxed">
                 Fear of ill-fitting cuts + struggle to compare 6 similar saved tops.
-              </p>
-            </div>
-
-            <div className="rounded-2xl bg-slate-950/80 border border-slate-800/80 p-4">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                Primary Information Leakage
-              </span>
-              <div className="text-sm font-bold text-white mb-1 flex items-center justify-between">
-                <span>WhatsApp Group Chats</span>
-                <span className="text-xs text-indigo-400 font-mono">41.2%</span>
-              </div>
-              <p className="text-[11px] text-slate-400 leading-relaxed">
-                Users leave Myntra for 48–72h sharing screenshots for friend votes.
-              </p>
-            </div>
-
-            <div className="rounded-2xl bg-slate-950/80 border border-slate-800/80 p-4">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                Top Strategic Opportunity
-              </span>
-              <div className="text-sm font-bold text-emerald-400 mb-1 flex items-center justify-between">
-                <span>Fit Benchmark & Look Canvas</span>
-                <span className="text-xs text-emerald-400 font-mono">Score 94.2</span>
-              </div>
-              <p className="text-[11px] text-slate-400 leading-relaxed">
-                Self-service confidence builders converting intent in &lt;48h.
               </p>
             </div>
           </div>
