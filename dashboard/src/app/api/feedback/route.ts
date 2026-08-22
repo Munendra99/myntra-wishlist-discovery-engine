@@ -10,14 +10,14 @@ export async function GET(request: Request) {
     const theme = searchParams.get("theme") || "all";
     const search = searchParams.get("search") || "";
     const counterEvidence = searchParams.get("counter") === "true";
-    const limit = parseInt(searchParams.get("limit") || "60", 10);
+    const limit = parseInt(searchParams.get("limit") || "100", 10);
 
+    // 1. Initialize base selection
     let query = supabase
       .from("raw_feedback")
-      .select("*", { count: "exact" })
-      .order("scraped_at", { ascending: false })
-      .limit(limit);
+      .select("*", { count: "exact" });
 
+    // 2. Apply WHERE filters first
     if (platform !== "all") {
       query = query.eq("platform", platform);
     }
@@ -35,6 +35,9 @@ export async function GET(request: Request) {
         "text.ilike.%perfect fit%,text.ilike.%love the dress%,text.ilike.%good material%,text.ilike.%great quality%"
       );
     }
+
+    // 3. Apply ORDER and LIMIT after all WHERE filters
+    query = query.order("scraped_at", { ascending: false }).limit(limit);
 
     const { data, count, error } = await query;
 
