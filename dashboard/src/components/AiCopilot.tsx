@@ -31,14 +31,19 @@ Click any of the suggested queries above or ask your own discovery question!`,
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
   };
 
   useEffect(() => {
-    scrollToBottom();
+    // Only scroll the internal chat container when messages are actively added, never scroll the main page
+    if (messages.length > 1 || isLoading) {
+      scrollToBottom();
+    }
   }, [messages, isLoading]);
 
   const quickPrompts = [
@@ -47,7 +52,7 @@ Click any of the suggested queries above or ask your own discovery question!`,
     "What uncertainties remain after users have identified a product they like?",
     "What causes users to postpone a purchase?",
     "How do users compare multiple shortlisted products?",
-    "What information do users seek outside Myntra/AJIO before purchasing?",
+    "What information do users seek outside Myntra before purchasing?",
     "What role do fit, size, styling, price, reviews, occasion and social validation play?",
     "When do users use the wishlist as genuine purchase intent versus simply as a bookmarking mechanism?",
     "How do these behaviors differ across user segments?",
@@ -151,8 +156,11 @@ Click any of the suggested queries above or ask your own discovery question!`,
             </div>
           </div>
 
-          {/* Messages List */}
-          <div className="h-[460px] overflow-y-auto pr-2 space-y-4 mb-4 custom-scrollbar bg-slate-950/70 rounded-2xl p-4 border border-slate-800/80">
+          {/* Messages List - Container scoped scrolling */}
+          <div
+            ref={chatContainerRef}
+            className="h-[460px] overflow-y-auto pr-2 space-y-4 mb-4 custom-scrollbar bg-slate-950/70 rounded-2xl p-4 border border-slate-800/80"
+          >
             {messages.map((m, idx) => (
               <div
                 key={idx}
@@ -255,7 +263,6 @@ Click any of the suggested queries above or ask your own discovery question!`,
                 </span>
               </div>
             )}
-            <div ref={messagesEndRef} />
           </div>
 
           {/* Input Box */}

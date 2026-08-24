@@ -105,7 +105,12 @@ export const Navbar: React.FC<NavbarProps> = ({
             return (
               <button
                 key={tab.id}
-                onClick={() => onSelectTab(tab.id)}
+                onClick={() => {
+                  onSelectTab(tab.id);
+                  if (typeof window !== "undefined") {
+                    window.scrollTo({ top: 0, behavior: "instant" });
+                  }
+                }}
                 className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all whitespace-nowrap ${
                   isActive
                     ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md shadow-pink-500/25"
