@@ -117,17 +117,17 @@ Click any of the suggested queries above or ask your own discovery question!`,
       <div className="rounded-3xl bg-gradient-to-b from-slate-900 via-slate-900/95 to-slate-950 border border-slate-800 shadow-2xl overflow-hidden">
         <div className="px-6 py-4 bg-slate-950/80 border-b border-slate-800 flex items-center justify-between flex-wrap gap-2">
           <div className="flex items-center space-x-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-pink-500 to-rose-500 flex items-center justify-center shadow-md shadow-pink-500/25">
-              <Bot className="w-5 h-5 text-white" />
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-pink-500 to-rose-500 flex items-center justify-center shadow-md shadow-pink-500/25">
+              <Bot className="w-4 h-4 text-white" />
             </div>
             <div>
-              <h3 className="font-bold text-white text-base sm:text-lg flex items-center gap-2">
+              <h3 className="font-bold text-white text-sm flex items-center gap-2">
                 Executive Discovery Copilot
-                <span className="text-xs font-bold bg-emerald-500/10 text-emerald-400 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
+                <span className="text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/20">
                   Grounded on 3.0k+ Reviews
                 </span>
               </h3>
-              <p className="text-xs sm:text-sm text-slate-300">
+              <p className="text-[11px] text-slate-400">
                 Structured RAG Q&A answering discovery questions with citations & counter-evidence
               </p>
             </div>
@@ -139,16 +139,16 @@ Click any of the suggested queries above or ask your own discovery question!`,
         <div className="p-6">
           {/* Quick Prompts Pills */}
           <div className="mb-4">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-300 block mb-2.5">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-2">
               Suggested Queries:
             </span>
-            <div className="flex flex-wrap gap-2.5">
+            <div className="flex flex-wrap gap-2">
               {quickPrompts.map((prompt, idx) => (
                 <button
                   key={idx}
                   onClick={() => handleSend(prompt)}
                   disabled={isLoading}
-                  className="text-xs sm:text-sm font-medium bg-slate-950 hover:bg-slate-800 text-slate-200 hover:text-pink-300 border border-slate-800 hover:border-pink-500/40 px-3.5 py-2 rounded-xl transition-all text-left shadow-sm active:scale-95 disabled:opacity-50"
+                  className="text-xs bg-slate-950 hover:bg-slate-800 text-slate-300 hover:text-pink-300 border border-slate-800 hover:border-pink-500/40 px-3 py-1.5 rounded-xl transition-all text-left shadow-sm active:scale-95 disabled:opacity-50"
                 >
                   💡 {prompt}
                 </button>
@@ -159,7 +159,7 @@ Click any of the suggested queries above or ask your own discovery question!`,
           {/* Messages List - Container scoped scrolling */}
           <div
             ref={chatContainerRef}
-            className="h-[500px] overflow-y-auto pr-2 space-y-4 mb-4 custom-scrollbar bg-slate-950/70 rounded-2xl p-5 border border-slate-800/80"
+            className="h-[460px] overflow-y-auto pr-2 space-y-4 mb-4 custom-scrollbar bg-slate-950/70 rounded-2xl p-4 border border-slate-800/80"
           >
             {messages.map((m, idx) => (
               <div
@@ -169,73 +169,73 @@ Click any of the suggested queries above or ask your own discovery question!`,
                 }`}
               >
                 {m.role === "assistant" && (
-                  <div className="w-9 h-9 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center shrink-0 mt-1">
-                    <Bot className="w-5 h-5 text-pink-400" />
+                  <div className="w-8 h-8 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center shrink-0 mt-1">
+                    <Bot className="w-4 h-4 text-pink-400" />
                   </div>
                 )}
 
                 <div
-                  className={`max-w-[90%] rounded-2xl px-5 py-4 ${
+                  className={`max-w-[90%] rounded-2xl px-5 py-4 text-xs leading-relaxed ${
                     m.role === "user"
-                      ? "bg-gradient-to-r from-pink-500 to-rose-600 text-white font-medium shadow-md text-sm sm:text-base"
-                      : "bg-slate-900/90 border border-slate-800 text-slate-200 shadow-md text-sm sm:text-[15px] leading-relaxed"
+                      ? "bg-gradient-to-r from-pink-500 to-rose-600 text-white font-medium shadow-md"
+                      : "bg-slate-900/90 border border-slate-800 text-slate-200 shadow-md"
                   }`}
                 >
                   {m.role === "user" ? (
-                    <div className="whitespace-pre-wrap font-sans font-medium">
+                    <div className="whitespace-pre-wrap font-sans text-sm font-medium">
                       {m.content}
                     </div>
                   ) : (
-                    <div className="markdown-content text-slate-200 space-y-3.5">
+                    <div className="markdown-content text-slate-200 space-y-3">
                       <ReactMarkdown
                         remarkPlugins={[remarkGfm]}
                         components={{
                           h1: ({ node, ...props }) => (
-                            <h1 className="text-lg sm:text-xl font-bold text-white mb-2.5 pb-1.5 border-b border-slate-800" {...props} />
+                            <h1 className="text-base font-bold text-white mb-2 pb-1 border-b border-slate-800" {...props} />
                           ),
                           h2: ({ node, ...props }) => (
-                            <h2 className="text-base sm:text-lg font-bold text-pink-300 mt-4 mb-2 flex items-center gap-2" {...props} />
+                            <h2 className="text-sm font-bold text-pink-300 mt-3 mb-1.5 flex items-center gap-1.5" {...props} />
                           ),
                           h3: ({ node, ...props }) => (
-                            <h3 className="text-sm sm:text-base font-bold text-slate-100 mt-3 mb-1.5" {...props} />
+                            <h3 className="text-xs font-bold text-slate-100 mt-2 mb-1" {...props} />
                           ),
                           p: ({ node, ...props }) => (
-                            <p className="mb-2.5 leading-relaxed text-slate-200 text-sm sm:text-[15px]" {...props} />
+                            <p className="mb-2 leading-relaxed text-slate-300" {...props} />
                           ),
                           strong: ({ node, ...props }) => (
-                            <strong className="font-bold text-white bg-slate-800/80 px-1.5 py-0.5 rounded" {...props} />
+                            <strong className="font-bold text-white bg-slate-800/80 px-1 py-0.5 rounded" {...props} />
                           ),
                           ul: ({ node, ...props }) => (
-                            <ul className="list-disc list-inside space-y-1.5 my-2.5 pl-1 text-slate-200 text-sm sm:text-[15px]" {...props} />
+                            <ul className="list-disc list-inside space-y-1 my-2 pl-1 text-slate-300" {...props} />
                           ),
                           ol: ({ node, ...props }) => (
-                            <ol className="list-decimal list-inside space-y-1.5 my-2.5 pl-1 text-slate-200 text-sm sm:text-[15px]" {...props} />
+                            <ol className="list-decimal list-inside space-y-1 my-2 pl-1 text-slate-300" {...props} />
                           ),
                           li: ({ node, ...props }) => (
                             <li className="leading-relaxed" {...props} />
                           ),
                           blockquote: ({ node, ...props }) => (
-                            <blockquote className="border-l-4 border-pink-500 pl-4 py-2 my-3 italic bg-slate-950/80 rounded-r text-slate-200 text-sm sm:text-[15px]" {...props} />
+                            <blockquote className="border-l-2 border-pink-500 pl-3 py-1 my-2 italic bg-slate-950/80 rounded text-slate-300" {...props} />
                           ),
                           table: ({ node, ...props }) => (
-                            <div className="overflow-x-auto my-3.5 rounded-xl border border-slate-800 bg-slate-950">
-                              <table className="w-full text-left text-sm border-collapse" {...props} />
+                            <div className="overflow-x-auto my-3 rounded-xl border border-slate-800 bg-slate-950">
+                              <table className="w-full text-left text-xs border-collapse" {...props} />
                             </div>
                           ),
                           thead: ({ node, ...props }) => (
-                            <thead className="bg-slate-800/80 text-pink-300 font-bold border-b border-slate-700 text-sm" {...props} />
+                            <thead className="bg-slate-800/80 text-pink-300 font-semibold border-b border-slate-700" {...props} />
                           ),
                           tbody: ({ node, ...props }) => (
-                            <tbody className="divide-y divide-slate-800 text-slate-200 text-sm" {...props} />
+                            <tbody className="divide-y divide-slate-800 text-slate-300" {...props} />
                           ),
                           th: ({ node, ...props }) => (
-                            <th className="px-4 py-2.5 font-bold text-slate-100" {...props} />
+                            <th className="px-3 py-2 font-bold text-slate-200" {...props} />
                           ),
                           td: ({ node, ...props }) => (
-                            <td className="px-4 py-2.5" {...props} />
+                            <td className="px-3 py-2" {...props} />
                           ),
                           code: ({ node, ...props }) => (
-                            <code className="bg-slate-950 text-pink-300 px-1.5 py-0.5 rounded font-mono text-xs sm:text-sm border border-slate-800" {...props} />
+                            <code className="bg-slate-950 text-pink-300 px-1.5 py-0.5 rounded font-mono text-[11px] border border-slate-800" {...props} />
                           ),
                         }}
                       >
@@ -246,19 +246,19 @@ Click any of the suggested queries above or ask your own discovery question!`,
                 </div>
 
                 {m.role === "user" && (
-                  <div className="w-9 h-9 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center shrink-0 mt-1">
-                    <User className="w-5 h-5 text-slate-300" />
+                  <div className="w-8 h-8 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center shrink-0 mt-1">
+                    <User className="w-4 h-4 text-slate-300" />
                   </div>
                 )}
               </div>
             ))}
 
             {isLoading && (
-              <div className="flex items-center space-x-3 text-slate-300 text-sm py-3 pl-2">
-                <div className="w-9 h-9 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center shrink-0">
-                  <Loader2 className="w-5 h-5 text-pink-400 animate-spin" />
+              <div className="flex items-center space-x-3 text-slate-400 text-xs py-3 pl-2">
+                <div className="w-8 h-8 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center shrink-0">
+                  <Loader2 className="w-4 h-4 text-pink-400 animate-spin" />
                 </div>
-                <span className="font-mono text-slate-200 animate-pulse text-sm">
+                <span className="font-mono text-slate-300 animate-pulse">
                   Querying 3,026+ structured signals & synthesizing discovery evidence...
                 </span>
               </div>
@@ -279,14 +279,14 @@ Click any of the suggested queries above or ask your own discovery question!`,
               value={input}
               onChange={(e) => setInput(e.target.value)}
               disabled={isLoading}
-              className="flex-1 bg-slate-950 border border-slate-800 text-white text-sm sm:text-base rounded-xl px-4 py-3.5 focus:outline-none focus:border-pink-500 transition-colors shadow-inner"
+              className="flex-1 bg-slate-950 border border-slate-800 text-white text-xs rounded-xl px-4 py-3 focus:outline-none focus:border-pink-500 transition-colors shadow-inner"
             />
             <button
               type="submit"
               disabled={isLoading || !input.trim()}
-              className="bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white p-3.5 rounded-xl transition-all shadow-md shadow-pink-500/25 active:scale-95 disabled:opacity-50"
+              className="bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white p-3 rounded-xl transition-all shadow-md shadow-pink-500/25 active:scale-95 disabled:opacity-50"
             >
-              <Send className="w-5 h-5" />
+              <Send className="w-4 h-4" />
             </button>
           </form>
         </div>
